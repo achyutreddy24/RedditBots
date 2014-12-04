@@ -41,7 +41,10 @@ print('Loaded Completed table')
 sql.commit()
 
 r = praw.Reddit(USERAGENT)
-r.login(USERNAME, PASSWORD) 
+r.login(USERNAME, PASSWORD)
+
+def makeConversion(str):
+
 
 def scanSub():
     print('Searching '+ SUBREDDIT + '.')
@@ -62,7 +65,8 @@ def scanSub():
             for i in range(len(KEYWORDS)):
                 print('Looking for keyword '+KEYWORDS[i])
                 gex = "\\b%s\\b" % KEYWORDS[i].lower()
-                if re.search(gex, cbody):
+                match_object = re.search(gex, cbody):
+                if match_object:
                     print('Found %s by %s' % (KEYWORDS[i], cauthor))
                     comment.reply(REPLYSTRING)
                 i = i+1
