@@ -64,15 +64,19 @@ def scanSub():
             i = 0
             for i in range(len(KEYWORDS)):
                 print('Looking for keyword '+KEYWORDS[i])
-                gex = "\\b%s\\b" % KEYWORDS[i].lower()
+                gex = "\\b([\\d\\.]*)%s([\\d\\.]*)\\b" % KEYWORDS[i].lower()
+                gex = ges.replace("$", "\\$")
                 match_object = re.search(gex, cbody)
                 if match_object:
-                    print('Found %s by %s' % (KEYWORDS[i], cauthor))
+                    money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
+                    print('Found %s by %s with value %s' % (KEYWORDS[i], cauthor, money))
                     comment.reply(REPLYSTRING)
                 i = i+1
             #cur.execute('INSERT INTO oldposts VALUES(?)', [cid])
     sql.commit()
 
+def xor(a, b):
+    return (a or b) and not (a and b)
 
 while True:
     try:
