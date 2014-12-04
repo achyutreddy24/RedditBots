@@ -73,7 +73,7 @@ def scanSub():
                     if match_object: # re add no number handling
                         numberUnit = float(match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2))
                         makeConversion(numberUnit, typeUnit, i)
-                        print('Found %s by %s with value %s' % (typeUnit[i], cauthor, money))
+                        print('Found %s by %s with value %s' % (typeUnit[i], cauthor, numberUnit))
                         comment.reply(REPLYSTRING)
                     i = i+1
             #cur.execute('INSERT INTO oldposts VALUES(?)', [cid])
