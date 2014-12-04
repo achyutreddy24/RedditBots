@@ -45,7 +45,7 @@ sql.commit()
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
-def makeConversion(str):
+def makeConversion(unitNumber, unitType, unitIndex):
     pass
 
 def scanSub():
@@ -63,16 +63,17 @@ def scanSub():
         if not cur.fetchone():
             print('Testing')
             cbody = comment.body.lower()
-            for unitType in BIGLIST:
+            for typeUnit in BIGLIST:
                 i = 0
-                for i in range(len(unitType)):
-                    print('Looking for keyword '+unitType[i])
-                    gex = "([\\d\\.]*)%s([\\d\\.]*)" % unitType[i].lower()
+                for i in range(len(typeUnit)):
+                    print('Looking for keyword '+typeUnit[i])
+                    gex = "([\\d\\.]*)%s([\\d\\.]*)" % typeUnit[i].lower()
                     gex = gex.replace("$", "\\$")
                     match_object = re.search(gex, cbody)
                     if match_object: # re add no number handling
-                        money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
-                        print('Found %s by %s with value %s' % (unitType[i], cauthor, money))
+                        numberUnit = float(match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2))
+                        makeConversion(numberUnit, typeUnit, i)
+                        print('Found %s by %s with value %s' % (typeUnit[i], cauthor, money))
                         comment.reply(REPLYSTRING)
                     i = i+1
             #cur.execute('INSERT INTO oldposts VALUES(?)', [cid])
