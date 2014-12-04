@@ -14,7 +14,7 @@ USERAGENT = "/u/FusionGaming's bot. Converts from one unit into another unit"
 #This is a short description of what the bot does. For example "/u/GoldenSights' Newsletter bot"
 SUBREDDIT = "Fusion_Gaming"
 #This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
-KEYWORDS = ["$"]
+CURRENCY = ["$", "€"]
 #These are the words you are looking for
 REPLYSTRING = "Found it!"
 #This is the word you want to put in reply
@@ -44,7 +44,7 @@ r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
 def makeConversion(str):
-
+    pass
 
 def scanSub():
     print('Searching '+ SUBREDDIT + '.')
@@ -62,17 +62,21 @@ def scanSub():
             print('Testting')
             cbody = comment.body.lower()
             i = 0
-            for i in range(len(KEYWORDS)):
-                print('Looking for keyword '+KEYWORDS[i])
-                gex = "\\b%s\\b" % KEYWORDS[i].lower()
-                match_object = re.search(gex, cbody):
+            for i in range(len(CURRENCY)):
+                print('Looking for keyword '+CURRENCY[i])
+                gex = "\\b([\\d\\.]*)%s([\\d\\.]*)\\b" % CURRENCY[i].lower()
+                gex = ges.replace("$", "\\$")
+                match_object = re.search(gex, cbody)
                 if match_object:
-                    print('Found %s by %s' % (KEYWORDS[i], cauthor))
+                    money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
+                    print('Found %s by %s with value %s' % (CURRENCY[i], cauthor, money))
                     comment.reply(REPLYSTRING)
                 i = i+1
             #cur.execute('INSERT INTO oldposts VALUES(?)', [cid])
     sql.commit()
 
+def xor(a, b):
+    return (a or b) and not (a and b)
 
 while True:
     try:
