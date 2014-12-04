@@ -61,16 +61,16 @@ def scanSub():
             cauthor = '[DELETED]'
         cur.execute('SELECT * FROM oldposts WHERE ID=?', [cid])
         if not cur.fetchone():
-            print('Testting')
+            print('Testing')
             cbody = comment.body.lower()
             for unitType in BIGLIST:
                 i = 0
                 for i in range(len(unitType)):
                     print('Looking for keyword '+unitType[i])
                     gex = "\\b([\\d\\.]*)%s([\\d\\.]*)\\b" % unitType[i].lower()
-                    gex = ges.replace("$", "\\$")
+                    gex = gex.replace("$", "\\$")
                     match_object = re.search(gex, cbody)
-                    if match_object:
+                    if match_object: # re add no number handling
                         money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
                         print('Found %s by %s with value %s' % (unitType[i], cauthor, money))
                         comment.reply(REPLYSTRING)
