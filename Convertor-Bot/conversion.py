@@ -67,7 +67,7 @@ def scanSub():
                 i = 0
                 for i in range(len(unitType)):
                     print('Looking for keyword '+unitType[i])
-                    gex = "\\b([\\d\\.]*)%s([\\d\\.]*)\\b" % unitType[i].lower()
+                    gex = "([\\d\\.]*)%s([\\d\\.]*)" % unitType[i].lower()
                     gex = gex.replace("$", "\\$")
                     match_object = re.search(gex, cbody)
                     if match_object: # re add no number handling
