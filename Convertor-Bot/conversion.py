@@ -72,6 +72,8 @@ def scanSub():
                     match_object = re.search(gex, cbody)
                     if match_object: # re add no number handling
                         money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
+                        print("'%s'" % match_object.group(1))
+                        print("'%s'" % match_object.group(2))
                         print('Found %s by %s with value %s' % (unitType[i], cauthor, money))
                         comment.reply(REPLYSTRING)
                     i = i+1
