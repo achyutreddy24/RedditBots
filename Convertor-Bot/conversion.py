@@ -14,8 +14,6 @@ USERAGENT = "/u/FusionGaming's bot. Converts from one unit into another unit"
 #This is a short description of what the bot does. For example "/u/GoldenSights' Newsletter bot"
 SUBREDDIT = "Fusion_Gaming"
 #This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
-CURRENCY = ["$", "€"]
-#These are the words you are looking for
 REPLYSTRING = "Found it!"
 #This is the word you want to put in reply
 MAXPOSTS = 100
@@ -24,6 +22,10 @@ WAIT = 20
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 
 
+CURRENCY = ["$", "€"]
+LENGTH = ["kilometer", "mile"]
+
+BIGLIST = [CURRENCY, LENGTH]
 '''All done!'''
 
 
@@ -61,17 +63,18 @@ def scanSub():
         if not cur.fetchone():
             print('Testting')
             cbody = comment.body.lower()
-            i = 0
-            for i in range(len(CURRENCY)):
-                print('Looking for keyword '+CURRENCY[i])
-                gex = "\\b([\\d\\.]*)%s([\\d\\.]*)\\b" % CURRENCY[i].lower()
-                gex = ges.replace("$", "\\$")
-                match_object = re.search(gex, cbody)
-                if match_object:
-                    money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
-                    print('Found %s by %s with value %s' % (CURRENCY[i], cauthor, money))
-                    comment.reply(REPLYSTRING)
-                i = i+1
+            for unitType in BIGLIST:
+                i = 0
+                for i in range(len(unitType)):
+                    print('Looking for keyword '+unitType[i])
+                    gex = "\\b([\\d\\.]*)%s([\\d\\.]*)\\b" % unitType[i].lower()
+                    gex = ges.replace("$", "\\$")
+                    match_object = re.search(gex, cbody)
+                    if match_object:
+                        money = match_object.group(1) if len(match_object.group(1)) > 0 else match_object.group(2)
+                        print('Found %s by %s with value %s' % (unitType[i], cauthor, money))
+                        comment.reply(REPLYSTRING)
+                    i = i+1
             #cur.execute('INSERT INTO oldposts VALUES(?)', [cid])
     sql.commit()
 
