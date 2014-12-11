@@ -22,8 +22,6 @@ MAXPOSTS = 100
 #This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
 WAIT = 3600
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
-REGEXLINK = 'rudaw.net\/english\/kurdistan\/(\d{1,})'
-#This is the regex to find article links
 WAITS = str(WAIT)
 
 
