@@ -34,6 +34,9 @@ ID = 578370509
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
+def ConvertMtoS(Minutes, Seconds):
+    return (Minutes*60)+Seconds
+
 
 def GetPosts():
     print('Searching '+ SUBREDDIT + '.')
