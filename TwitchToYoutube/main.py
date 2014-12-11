@@ -13,11 +13,11 @@ import moviepy.config
 moviepy.config.change_settings({"FFMPEG_BINARY": r"C:\FFMPEG\bin\ffmpeg.exe"})
 #print(moviepy.config.get_setting("FFMPEG_BINARY"))
 
-USERNAME  = "Convertor-Bot"
+USERNAME  = ""
 #This is the bot's Username. In order to send mail, he must have some amount of Karma.
-PASSWORD  = "Convertor-BotGO"
+PASSWORD  = ""
 #This is the bot's Password. 
-USERAGENT = "Testing things /u/FusionGaming"
+USERAGENT = ""
 #This is a short description of what the bot does."
 SUBREDDIT = "all"
 #This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
@@ -25,6 +25,14 @@ MAXPOSTS = 100
 #This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
 WAIT = 3600
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
+
+try:
+    import Config #This is a file in my python library which contains my Bot's username and password. I can push code to Git without showing credentials
+    USERNAME = Config.USERNAME
+    PASSWORD = Config.PASSWORD
+    USERAGENT = Config.USERAGENT
+except ImportError:
+    pass
 
 #Debugging variables
 MIN = 55
