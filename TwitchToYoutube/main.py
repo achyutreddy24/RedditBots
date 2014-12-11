@@ -31,6 +31,8 @@ MIN = 55
 SEC = 45
 ID = 578370509
 
+url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
+
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
@@ -46,6 +48,15 @@ def GetPosts():
         if post.is_self == False:
             pid = post.id
             print(post.url)
+            
+            matched = re.match(url_pattern, post.url)
+            if matched is None:
+                pass #Do stuff if it doesn't match
+            else:
+                r_id = matched.group(1)
+                r_min = matched.group(2)
+                r_sec = matched.group(3)
+            
 
 #http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 
