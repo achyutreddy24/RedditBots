@@ -5,6 +5,9 @@ import time
 import re
 import sqlite3
 
+#Example of link
+#http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
+
 import moviepy.config
 #Delete this if moviepy is set up correctly already or change it to your path
 moviepy.config.change_settings({"FFMPEG_BINARY": r"C:\FFMPEG\bin\ffmpeg.exe"})
@@ -15,13 +18,18 @@ USERNAME  = "Convertor-Bot"
 PASSWORD  = "Convertor-BotGO"
 #This is the bot's Password. 
 USERAGENT = "Testing things /u/FusionGaming"
-#This is a short description of what the bot does. For example "/u/GoldenSights' Newsletter bot"
+#This is a short description of what the bot does."
 SUBREDDIT = "all"
 #This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
 MAXPOSTS = 100
 #This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
 WAIT = 3600
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
+
+#Debugging variables
+MIN = 55
+SEC = 45
+ID = 578370509
 
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
