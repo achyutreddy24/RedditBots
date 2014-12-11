@@ -10,9 +10,9 @@ import praw # simple interface to the reddit API, also handles rate limiting of 
 resp = urllib.request.urlopen("http://rudaw.net/NewsListing.aspx?pageid=528")
 soup = BeautifulSoup(resp.read(), from_encoding=resp.info().get_param('charset'))
 
-USERNAME  = ""
+USERNAME  = "Convertor-Bot"
 #This is the bot's Username. In order to send mail, he must have some amount of Karma.
-PASSWORD  = ""
+PASSWORD  = "Convertor-BotGO"
 #This is the bot's Password. 
 USERAGENT = ""
 #This is a short description of what the bot does. For example "/u/GoldenSights' Newsletter bot"
