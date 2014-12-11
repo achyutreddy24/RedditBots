@@ -49,21 +49,10 @@ YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
 # Helpful message to display if the CLIENT_SECRETS_FILE is missing.
-MISSING_CLIENT_SECRETS_MESSAGE = """
-WARNING: Please configure OAuth 2.0
-
-To make this sample run you will need to populate the client_secrets.json file
-found at:
-
-   %s
-
-with information from the APIs Console
-https://code.google.com/apis/console#access
-
-For more information about the client_secrets.json file format, please visit:
-https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
-""" % os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                   CLIENT_SECRETS_FILE))
+MISSING_CLIENT_SECRETS_MESSAGE = 
+"""
+MISSING_CLIENT_SECRETS_MESSAGE
+"""
 
 def get_authenticated_service():
   flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE, scope=YOUTUBE_UPLOAD_SCOPE,
@@ -79,21 +68,19 @@ def get_authenticated_service():
     http=credentials.authorize(httplib2.Http()))
 
 
-def initialize_upload(options):
+def initialize_upload(Ptitle, Pdescription, Pcategory, PprivacyStatus, PfilePath):
   youtube = get_authenticated_service()
 
   tags = None
-  if options.keywords:
-    tags = options.keywords.split(",")
 
   insert_request = youtube.videos().insert(
     part="snippet,status",
     body=dict(
       snippet=dict(
-        title=options.title,
-        description=options.description,
+        title=Ptitle,
+        description=Pdescription,
         tags=tags,
-        categoryId=options.category
+        categoryId=Pcategory
       ),
       status=dict(
         privacyStatus=options.privacyStatus
@@ -104,8 +91,7 @@ def initialize_upload(options):
     # left off.) This is usually a best practice, but if you're using Python
     # older than 2.6 or if you're running on App Engine, you should set the
     # chunksize to something like 1024 * 1024 (1 megabyte).
-    media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True)
+    media_body=MediaFileUpload(PfilePath, chunksize=-1, resumable=False)
   )
 
-  resumable_upload(insert_request)
 
