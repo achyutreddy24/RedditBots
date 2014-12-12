@@ -1,5 +1,6 @@
 import twitchdownloader as td
 import FormatVideoFile as fvd
+import UploadToYoutube as uty
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import re
@@ -72,4 +73,6 @@ def GetPosts():
 #td.download_broadcast(578370509, 1)
 #fvd.GetVideoSection(r"578370509_01.flv", 50, 100)
 
-GetPosts()
+#GetPosts()
+
+uty.initialize_upload("Test Video Please Ignore", "Test", 22, "public", r"578370509_01.flv")
