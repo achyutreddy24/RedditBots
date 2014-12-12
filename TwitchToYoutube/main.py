@@ -68,6 +68,10 @@ def GetPosts():
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
 	chunk_info = td.getChunkNum(ID, TimeInSeconds)
     td.download_broadcast(ID, chunk_info[0])
+    return chunk_info[1]
+    
+def CutVideo(fileName, startTime, endTime):
+    fvd.GetVideoSection(fileName, 50, 100)
             
 
 #http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
