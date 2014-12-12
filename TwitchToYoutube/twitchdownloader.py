@@ -45,7 +45,7 @@ def download_broadcast(id_, chunk_num):
         print("{}".format(r.text))
         quit()
  
-    savepath = "{channel}_{id_}".format(channel=j['channel'], id_=id_)
+    savepath = "{id_}".format(id_=id_)
     try:
         os.makedirs(savepath)
     except OSError:
@@ -60,3 +60,29 @@ def download_broadcast(id_, chunk_num):
     download_file(video_url, filename, chunk_num+1, len(j['chunks']['live']))
  
     print("Finished downloading broadcast ID {0} on channel '{1}'".format(id_, j['channel']))
+    
+def getChunkNum(id_, TimeInSeconds):
+ 
+    pattern = "{base}/api/videos/a{id_}"
+    url = pattern.format(base=BASE_URL, id_=id_)
+    r = requests.get(url)
+    if r.status_code != 200:
+        raise Exception("API returned {0}".format(r.status_code))
+ 
+    try:
+        j = r.json()
+    except ValueError as e:
+        print("API did not return valid JSON: {}".format(e))
+        print("{}".format(r.text))
+        quit()
+
+    print ("Found {0} parts for broadcast ID {1} on channel '{2}'".format(len(j['chunks']['live']), id_, j['channel']))
+    
+    CLength = 0
+    for nr, chunk in enumerate(j['chunks']["live"]):
+        print("Test" + str(nr))
+        CLength = CLength + chunk["length"]
+        print(chunk["length"])
+        if CLength > TimeInSeconds:
+            lst = [nr, TimeInSeconds-(CLength-chunk["length"])]
+            return lst

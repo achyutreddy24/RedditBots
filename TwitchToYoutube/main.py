@@ -1,6 +1,5 @@
 import twitchdownloader as td
 import FormatVideoFile as fvd
-import UploadToYoutube as uty
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import re
@@ -36,9 +35,9 @@ except ImportError:
     pass
 
 #Debugging variables
-MIN = 55
-SEC = 45
-ID = 578370509
+rMIN = 55
+rSEC = 45
+rID = 578370509
 
 url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
 
@@ -62,9 +61,13 @@ def GetPosts():
             if matched is None:
                 pass #Do stuff if it doesn't match
             else:
-                r_id = matched.group(1)
-                r_min = matched.group(2)
-                r_sec = matched.group(3)
+                rID = matched.group(1)
+                rMIN = matched.group(2)
+                rSEC = matched.group(3)
+				
+def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
+	chunk_info = td.getChunkNum(ID, TimeInSeconds)
+    td.download_broadcast(ID, chunk_info[0])
             
 
 #http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
@@ -75,4 +78,4 @@ def GetPosts():
 
 #GetPosts()
 
-uty.initialize_upload("Test Video Please Ignore", "Test", 22, "public", r"578370509_01.flv")
+
