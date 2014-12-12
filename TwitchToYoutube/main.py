@@ -31,6 +31,8 @@ except ImportError:
 
 
 #Regex pattern to get the correct twitch links
+#SAMPLE LINK
+#http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
 
 #Logs into reddit
@@ -83,8 +85,3 @@ def mainLoop():
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         CutVideo(ID, STime, STime+VIDEOLENGTH)
         #Need to email this file to the mobile upload link
-
-#http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
-
-
-
