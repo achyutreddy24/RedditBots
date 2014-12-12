@@ -13,42 +13,38 @@ import moviepy.config
 moviepy.config.change_settings({"FFMPEG_BINARY": r"C:\FFMPEG\bin\ffmpeg.exe"})
 #print(moviepy.config.get_setting("FFMPEG_BINARY"))
 
-USERNAME  = ""
-#This is the bot's Username. In order to send mail, he must have some amount of Karma.
-PASSWORD  = ""
-#This is the bot's Password. 
-USERAGENT = ""
-#This is a short description of what the bot does."
-SUBREDDIT = "all"
-#This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
-MAXPOSTS = 100
-#This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
-WAIT = 3600
-#This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 
+#Import Settings from Config.py
 try:
-    import Config #This is a file in my python library which contains my Bot's username and password. I can push code to Git without showing credentials
+    import Config
     USERNAME = Config.USERNAME
     PASSWORD = Config.PASSWORD
     USERAGENT = Config.USERAGENT
+    SUBREDDIT = Config.SUBREDDIT
+    MAXPOSTS = Config.MAXPOSTS
+    WAIT = Config.WAIT
+    
+    VIDEOLENGTH = Config.VIDEOLENGTH
 except ImportError:
-    pass
+    print("Error Importing Config.py")
 
-#Debugging variables
-rMIN = 55
-rSEC = 45
-rID = 578370509
 
+
+#Regex pattern to get the correct twitch links
 url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
 
+#Logs into reddit
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
+
 def ConvertMtoS(Minutes, Seconds):
+    """Converts to seconds"""
     return (Minutes*60)+Seconds
 
 
 def GetPosts():
+    """Finds twitch url and returns id and time"""
     print('Searching '+ SUBREDDIT + '.')
     subreddit = r.get_subreddit(SUBREDDIT)
     posts = subreddit.get_new(limit=MAXPOSTS)
@@ -64,22 +60,31 @@ def GetPosts():
                 rID = matched.group(1)
                 rMIN = matched.group(2)
                 rSEC = matched.group(3)
+                lst = [rID, rMIN, rSEC]
+                return lst
 				
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
-	chunk_info = td.getChunkNum(ID, TimeInSeconds)
+    """Figures out which chunk to download and where the segment is in that chunk"""
+    chunk_info = td.getChunkNum(ID, TimeInSeconds)
     td.download_broadcast(ID, chunk_info[0])
     return chunk_info[1]
     
 def CutVideo(fileName, startTime, endTime):
-    fvd.GetVideoSection(fileName, 50, 100)
-            
+    """Cuts the video files"""
+    fvd.GetVideoSection(fileName, startTime, endTime)
+
+    
+def mainLoop():
+    url_info = GetPosts()
+    #GetPosts returns this list if it finds a url match
+    if url_info is not None:
+        ID = url_info[0]
+        STime = ConvertMtoS(url_info[1], url_info[2])
+        StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
+        CutVideo(ID, STime, STime+VIDEOLENGTH)
+        #Need to email this file to the mobile upload link
 
 #http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 
-
-#td.download_broadcast(578370509, 1)
-#fvd.GetVideoSection(r"578370509_01.flv", 50, 100)
-
-#GetPosts()
 
 

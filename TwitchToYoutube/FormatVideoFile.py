@@ -1,4 +1,10 @@
 from moviepy.editor import *
+#Import Settings from Config.py
+try:
+    import Config
+    FPS = Config.FPS
+except ImportError:
+    print("Error Importing Config.py")
 
 
 def GetVideoSection(fileName, startTime, endTime):
@@ -8,4 +14,4 @@ def GetVideoSection(fileName, startTime, endTime):
     final_clip = CompositeVideoClip([clip])
 
     # write the result to a file in any format
-    final_clip.to_videofile(fileName+"_edited.mp4",fps=30)
+    final_clip.to_videofile(fileName+"_edited.mp4",fps=FPS)
