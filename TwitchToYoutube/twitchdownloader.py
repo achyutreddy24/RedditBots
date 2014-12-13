@@ -79,10 +79,12 @@ def getChunkNum(id_, TimeInSeconds):
     print ("Found {0} parts for broadcast ID {1} on channel '{2}'".format(len(j['chunks']['live']), id_, j['channel']))
     
     CLength = 0
+    ChunkNum = -1
     for nr, chunk in enumerate(j['chunks']["live"]):
+        ChunkNum = ChunkNum+1
         print("Test" + str(nr))
         CLength = CLength + chunk["length"]
         print(chunk["length"])
         if CLength > TimeInSeconds:
-            lst = [nr, TimeInSeconds-(CLength-chunk["length"])]
+            lst = [int(nr), TimeInSeconds-(CLength-chunk["length"])]
             return lst

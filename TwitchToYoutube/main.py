@@ -1,6 +1,7 @@
 import twitchdownloader as td
 import FormatVideoFile as fvd
 import YoutubeLink as yl
+import SendEmail as se
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import re
@@ -27,6 +28,10 @@ try:
     WAIT = Config.WAIT
     
     VIDEOLENGTH = Config.VIDEOLENGTH
+    
+    EUSERNAME = Config.EUSERNAME
+    UPLOADLINK = Config.UPLOADLINK
+    VIDEODESCRIPTION = Config.VIDEODESCRIPTION
 except ImportError:
     print("Error Importing Config.py")
 
@@ -44,7 +49,7 @@ r.login(USERNAME, PASSWORD)
 
 def ConvertMtoS(Minutes, Seconds):
     """Converts to seconds"""
-    return (Minutes*60)+Seconds
+    return int((Minutes*60)+Seconds)
 
 
 def GetPosts():
@@ -57,17 +62,19 @@ def GetPosts():
             pid = post.id
             matched = re.match(url_pattern, post.url)
             if matched is None:
-                pass #Do stuff if it doesn't match
+                print("No url found")
             else:
                 rID = matched.group(1)
                 rMIN = matched.group(2)
                 rSEC = matched.group(3)
-                lst = [rID, rMIN, rSEC, post]
+                lst = [rID, rMIN, rSEC, post, post.title, post.url]
+                print("url found")
                 return lst
 				
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
     """Figures out which chunk to download and where the segment is in that chunk"""
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
+    print(str(chunk_info[0]) + " testin error")
     td.download_broadcast(ID, chunk_info[0])
     return chunk_info[1]
     
@@ -91,14 +98,25 @@ def mainLoop():
     if url_info is not None:
         ID = url_info[0]
         POST = url_info[3]
+        TITLE = url_info[4]
+        URL = url_info[5]
         STime = ConvertMtoS(url_info[1], url_info[2])
         
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         CutVideo(ID, StartingTime, StartingTime+VIDEOLENGTH)
         
         #Need to email this file to the mobile upload link
+        se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+"_edited.mp4"])
         
-        LINK = LoopVideoCheck(videoTitle, 30) #Keeps Looping until uploaded video is detected
+        LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
         POST.reply(REPLYMESSAGE.format(LINK))
     else:
         print("No link found this time")
+        
+while True:
+    #try:
+    mainLoop()
+    #except Exception as e:
+    #    print("ERROR:", e)
+    print('Sleeping ' + str(WAIT) + ' seconds.\n')
+    time.sleep(WAIT)
