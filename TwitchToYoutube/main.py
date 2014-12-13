@@ -1,5 +1,6 @@
 import twitchdownloader as td
 import FormatVideoFile as fvd
+import YoutubeLink as yl
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import re
@@ -53,8 +54,6 @@ def GetPosts():
     for post in posts:
         if post.is_self == False:
             pid = post.id
-            print(post.url)
-            
             matched = re.match(url_pattern, post.url)
             if matched is None:
                 pass #Do stuff if it doesn't match
@@ -62,7 +61,7 @@ def GetPosts():
                 rID = matched.group(1)
                 rMIN = matched.group(2)
                 rSEC = matched.group(3)
-                lst = [rID, rMIN, rSEC]
+                lst = [rID, rMIN, rSEC, pid]
                 return lst
 				
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
@@ -74,8 +73,17 @@ def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
 def CutVideo(fileName, startTime, endTime):
     """Cuts the video files"""
     fvd.GetVideoSection(fileName, startTime, endTime)
-
+  
+def LoopVideoCheck(titleOfVideo, TimeBetweenLoops):
+    UploadStatus = yl.CheckIfUploaded(titleOfVideo)
+    while UploadStatus is None:
+        UploadStatus = yl.CheckIfUploaded(titleOfVideo)
+        if UploadStatus:
+            return UploadStatus #YoutubeLink
+        print('Sleeping ' + str(TimeBetweenLoops) + ' seconds to wait for video upload.\n')
+        time.sleep(TimeBetweenLoops)
     
+
 def mainLoop():
     url_info = GetPosts()
     #GetPosts returns this list if it finds a url match
@@ -83,5 +91,9 @@ def mainLoop():
         ID = url_info[0]
         STime = ConvertMtoS(url_info[1], url_info[2])
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
-        CutVideo(ID, STime, STime+VIDEOLENGTH)
+        CutVideo(ID, StartingTime, StartingTime+VIDEOLENGTH)
+        
         #Need to email this file to the mobile upload link
+        
+        LINK = LoopVideoCheck(videoTitle, 30) #Keeps Looping until uploaded video is detected
+        
