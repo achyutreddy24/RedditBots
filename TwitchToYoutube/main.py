@@ -49,7 +49,7 @@ r.login(USERNAME, PASSWORD)
 
 def ConvertMtoS(Minutes, Seconds):
     """Converts to seconds"""
-    return int((Minutes*60)+Seconds)
+    return int((int(Minutes)*60)+int(Seconds))
 
 
 def GetPosts():
@@ -68,11 +68,13 @@ def GetPosts():
                 rMIN = matched.group(2)
                 rSEC = matched.group(3)
                 lst = [rID, rMIN, rSEC, post, post.title, post.url]
+                print("Title is "+post.title)
                 print("url found")
                 return lst
 				
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
     """Figures out which chunk to download and where the segment is in that chunk"""
+    print("TimeInSeconds is " + str(TimeInSeconds))
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
     print(str(chunk_info[0]) + " testin error")
     td.download_broadcast(ID, chunk_info[0])
@@ -98,15 +100,15 @@ def mainLoop():
     if url_info is not None:
         ID = url_info[0]
         POST = url_info[3]
-        TITLE = url_info[4]
+        TITLE = str(url_info[4])
         URL = url_info[5]
         STime = ConvertMtoS(url_info[1], url_info[2])
         
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
-        CutVideo(ID, StartingTime, StartingTime+VIDEOLENGTH)
+        CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
         
         #Need to email this file to the mobile upload link
-        se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+"_edited.mp4"])
+        se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
         
         LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
         POST.reply(REPLYMESSAGE.format(LINK))

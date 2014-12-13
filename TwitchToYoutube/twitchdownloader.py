@@ -45,18 +45,18 @@ def download_broadcast(id_, chunk_num):
         print("{}".format(r.text))
         quit()
  
-    savepath = "{id_}".format(id_=id_)
-    try:
-        os.makedirs(savepath)
-    except OSError:
-        if not os.path.isdir(savepath):
-            raise
+    #savepath = "{id_}".format(id_=id_)
+    #try:
+    #    os.makedirs(savepath)
+    #except OSError:
+    #    if not os.path.isdir(savepath):
+    #        raise
  
     print ("Found {0} parts for broadcast ID {1} on channel '{2}'".format(len(j['chunks']['live']), id_, j['channel']))
 
     video_url = j["chunks"]["live"][chunk_num]["url"]
     ext = os.path.splitext(video_url)[1]
-    filename = "{0}/{1}_{2:0>2}{3}".format(savepath, id_, chunk_num, ext)
+    filename = "{0}{1}".format(id_, ext)
     download_file(video_url, filename, chunk_num+1, len(j['chunks']['live']))
  
     print("Finished downloading broadcast ID {0} on channel '{1}'".format(id_, j['channel']))
@@ -82,9 +82,10 @@ def getChunkNum(id_, TimeInSeconds):
     ChunkNum = -1
     for nr, chunk in enumerate(j['chunks']["live"]):
         ChunkNum = ChunkNum+1
-        print("Test" + str(nr))
+        #print("Test" + str(nr))
         CLength = CLength + chunk["length"]
-        print(chunk["length"])
+        #print(chunk["length"])
         if CLength > TimeInSeconds:
-            lst = [int(nr), TimeInSeconds-(CLength-chunk["length"])]
+            lst = [ChunkNum, TimeInSeconds-(CLength-chunk["length"])]
             return lst
+    return ["Error", "Err"]

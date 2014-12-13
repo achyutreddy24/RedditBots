@@ -24,11 +24,11 @@ def send_mail(send_from, send_to, subject, text, files=None):
     msg.attach(MIMEText(text))
 
     for f in files or []:
-        with open(f, "rb") as fil:
-            msg.attach(MIMEApplication(
-                fil.read(),
-                Content_Disposition='attachment; filename="Test.mp4";'# File name is not working, but youtube still uploads it so its fine for now
-            ))
+     with open(f, "rb") as fil:
+         submsg = MIMEApplication(fil.read())
+         sub msg.add_header('Content-Disposition', 'attachment', filename=f)
+         msg.attach(submsg)
+         
 
     server = smtplib.SMTP("smtp.gmail.com:587")
     server.starttls()
