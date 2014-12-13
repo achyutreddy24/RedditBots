@@ -18,6 +18,7 @@ soup = BeautifulSoup(resp.read(), from_encoding=resp.info().get_param('charset')
 def CheckIfUploaded(videoTitle):
     for link in soup.find_all('a', href=True):
         if re.search(REGEXLINK, link['href']):
+            print(link.string)
             if link.string == videoTitle:
                 return link['href']
             else:
