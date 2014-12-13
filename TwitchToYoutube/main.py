@@ -100,3 +100,5 @@ def mainLoop():
         
         LINK = LoopVideoCheck(videoTitle, 30) #Keeps Looping until uploaded video is detected
         POST.reply(REPLYMESSAGE.format(LINK))
+    else:
+        print("No link found this time")
