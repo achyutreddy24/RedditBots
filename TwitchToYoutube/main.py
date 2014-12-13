@@ -23,6 +23,7 @@ try:
     USERAGENT = Config.USERAGENT
     SUBREDDIT = Config.SUBREDDIT
     MAXPOSTS = Config.MAXPOSTS
+    REPLYMESSAGE = Config.REPLYMESSAGE
     WAIT = Config.WAIT
     
     VIDEOLENGTH = Config.VIDEOLENGTH
@@ -61,7 +62,7 @@ def GetPosts():
                 rID = matched.group(1)
                 rMIN = matched.group(2)
                 rSEC = matched.group(3)
-                lst = [rID, rMIN, rSEC, pid]
+                lst = [rID, rMIN, rSEC, post]
                 return lst
 				
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
@@ -89,11 +90,13 @@ def mainLoop():
     #GetPosts returns this list if it finds a url match
     if url_info is not None:
         ID = url_info[0]
+        POST = url_info[3]
         STime = ConvertMtoS(url_info[1], url_info[2])
+        
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         CutVideo(ID, StartingTime, StartingTime+VIDEOLENGTH)
         
         #Need to email this file to the mobile upload link
         
         LINK = LoopVideoCheck(videoTitle, 30) #Keeps Looping until uploaded video is detected
-        
+        POST.reply(REPLYMESSAGE.format(LINK))
