@@ -10,12 +10,10 @@ try:
 except ImportError:
     print("Error Importing Config.py")
 
-resp = urllib.request.urlopen(YOUTUBEVIDEOSPAGE)
-soup = BeautifulSoup(resp.read(), from_encoding=resp.info().get_param('charset'))
-
-
  
 def CheckIfUploaded(videoTitle):
+    resp = urllib.request.urlopen(YOUTUBEVIDEOSPAGE)
+    soup = BeautifulSoup(resp.read(), from_encoding=resp.info().get_param('charset'))
     for link in soup.find_all('a', href=True):
         if re.search(REGEXLINK, link['href']):
             if link.string == videoTitle:

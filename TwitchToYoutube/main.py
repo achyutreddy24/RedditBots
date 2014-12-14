@@ -32,6 +32,7 @@ try:
     EUSERNAME = Config.EUSERNAME
     UPLOADLINK = Config.UPLOADLINK
     VIDEODESCRIPTION = Config.VIDEODESCRIPTION
+    BASELINK = Config.BASELINK
 except ImportError:
     print("Error Importing Config.py")
 
@@ -45,6 +46,14 @@ url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d
 #Logs into reddit
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
+print("Logged into Reddit")
+
+
+sql = sqlite3.connect('posts.db')
+cur = sql.cursor()
+cur.execute('CREATE TABLE IF NOT EXISTS posts(PID TEXT, TITLE TEXT, TLINK TEXT, YLINK TEXT)')
+print('Loaded SQL Database')
+sql.commit()
 
 
 def ConvertMtoS(Minutes, Seconds):
@@ -55,22 +64,28 @@ def ConvertMtoS(Minutes, Seconds):
 def GetPosts():
     """Finds twitch url and returns id and time"""
     print('Searching '+ SUBREDDIT + '.')
-    subreddit = r.get_subreddit(SUBREDDIT)
-    posts = subreddit.get_new(limit=MAXPOSTS)
+    #subreddit = r.get_subreddit(SUBREDDIT)
+    posts = r.get_domain_listing('twitch.tv', sort='new',limit=100)
+    #posts = subreddit.get_new(limit=MAXPOSTS)
     for post in posts:
-        if post.is_self == False:
-            pid = post.id
-            matched = re.match(url_pattern, post.url)
-            if matched is None:
-                print("No url found")
+        cur.execute('SELECT * FROM posts WHERE PID=?', [post.id])
+        if not cur.fetchone():
+            if post.is_self == False:
+                pid = post.id
+                matched = re.match(url_pattern, post.url)
+                if matched is None:
+                    pass
+                else:
+                    rID = matched.group(1)
+                    rMIN = matched.group(2)
+                    rSEC = matched.group(3)
+                    lst = [rID, rMIN, rSEC, post, post.title, post.url]
+                    print("Title is "+post.title)
+                    return lst
             else:
-                rID = matched.group(1)
-                rMIN = matched.group(2)
-                rSEC = matched.group(3)
-                lst = [rID, rMIN, rSEC, post, post.title, post.url]
-                print("Title is "+post.title)
-                print("url found")
-                return lst
+                print("Will not reply to self")
+        else:
+            print("Already replied to that")
 				
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
     """Figures out which chunk to download and where the segment is in that chunk"""
@@ -90,6 +105,7 @@ def LoopVideoCheck(titleOfVideo, TimeBetweenLoops):
             return UploadStatus #YoutubeLink
         print('Sleeping ' + str(TimeBetweenLoops) + ' seconds to wait for video upload.\n')
         time.sleep(TimeBetweenLoops)
+    return UploadStatus
     
 
 def mainLoop():
@@ -109,14 +125,17 @@ def mainLoop():
         se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
         
         LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
-        POST.reply(REPLYMESSAGE.format(LINK))
+        POST.add_comment(REPLYMESSAGE.format(LINK))
+        cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
+        sql.commit()
+        print("Comment reply success")
     else:
         print("No link found this time")
         
 while True:
-    #try:
-    mainLoop()
-    #except Exception as e:
-    #    print("ERROR:", e)
+    try:
+        mainLoop()
+    except Exception as e:
+        print("ERROR:", e)
     print('Sleeping ' + str(WAIT) + ' seconds.\n')
     time.sleep(WAIT)
