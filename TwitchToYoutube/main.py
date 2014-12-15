@@ -64,12 +64,14 @@ def ConvertMtoS(Minutes, Seconds):
 def GetPosts():
     """Finds twitch url and returns id and time"""
     print('Searching '+ SUBREDDIT + '.')
-    #subreddit = r.get_subreddit(SUBREDDIT)
-    posts = r.get_domain_listing('twitch.tv', sort='new',limit=100)
+    #subreddit = r.get_subreddit("Fusion_Gaming")
+    posts = r.get_domain_listing('twitch.tv', sort='new',limit=MAXPOSTS)
     #posts = subreddit.get_new(limit=MAXPOSTS)
     for post in posts:
-        cur.execute('SELECT * FROM posts WHERE PID=?', [post.id])
+        print(post.url)
+        cur.execute('SELECT * FROM posts WHERE TLINK=?', [post.url])
         if not cur.fetchone():
+            print("HAVENOTREPLIED")
             if post.is_self == False:
                 pid = post.id
                 matched = re.match(url_pattern, post.url)
@@ -79,7 +81,7 @@ def GetPosts():
                     rID = matched.group(1)
                     rMIN = matched.group(2)
                     rSEC = matched.group(3)
-                    lst = [rID, rMIN, rSEC, post, post.title, post.url]
+                    lst = [rID, rMIN, rSEC, post, post.title, post.url, True]
                     print("Title is "+post.title)
                     return lst
             else:
@@ -111,7 +113,7 @@ def LoopVideoCheck(titleOfVideo, TimeBetweenLoops):
 def mainLoop():
     url_info = GetPosts()
     #GetPosts returns this list if it finds a url match
-    if url_info is not None:
+    if url_info[6]:
         ID = url_info[0]
         POST = url_info[3]
         TITLE = str(url_info[4])
@@ -120,12 +122,15 @@ def mainLoop():
         
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
+        print("Would be DOWNLOADING")
         
-        #Need to email this file to the mobile upload link
+        
+        Need to email this file to the mobile upload link
         se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
         
         LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
         POST.add_comment(REPLYMESSAGE.format(LINK))
+        
         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
         sql.commit()
         print("Comment reply success")

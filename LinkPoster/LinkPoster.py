@@ -29,7 +29,7 @@ article_links = []
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
-sql = sqlite3.connect('posts.db')
+sql = sqlite3.connect('sql.db')
 cur = sql.cursor()
 cur.execute('CREATE TABLE IF NOT EXISTS posts(LINK TEXT, TITLE TEXT, PID TEXT, RLINK TEXT)')
 print('Loaded SQL Database')
