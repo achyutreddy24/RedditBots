@@ -41,7 +41,7 @@ except ImportError:
 #Regex pattern to get the correct twitch links
 #SAMPLE LINK
 #http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
-url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
+url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""") #("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
 
 #Logs into reddit
 r = praw.Reddit(USERAGENT)
@@ -56,9 +56,20 @@ print('Loaded SQL Database')
 sql.commit()
 
 
-def ConvertMtoS(Minutes, Seconds):
+def ConvertMtoS(Hours, Minutes, Seconds):
     """Converts to seconds"""
+    Minutes = (int(Hours)*60)+int(Minutes)
     return int((int(Minutes)*60)+int(Seconds))
+    
+def MakeTime(Hours, Minutes, Seconds):
+    if not Hours:
+        Hours = 0
+    if not Minutes:
+        Minutes = 0
+    if not Seconds:
+        Seconds = 0
+    return ConvertMtoS(Hours, Minutes, Seconds)
+    
 
 
 def GetPosts():
@@ -79,11 +90,13 @@ def GetPosts():
                     pass
                 else:
                     rID = matched.group(1)
-                    rMIN = matched.group(2)
-                    rSEC = matched.group(3)
-                    lst = [rID, rMIN, rSEC, post, post.title, post.url, True]
+                    rHRS = matched.group(2)
+                    rMIN = matched.group(3)
+                    rSEC = matched.group(4)
+                    
+                    dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":post, "TITLE":post.title, "URL":post.url}
                     print("Title is "+post.title)
-                    return lst
+                    return dict
             else:
                 print("Will not reply to self")
         else:
@@ -113,19 +126,20 @@ def LoopVideoCheck(titleOfVideo, TimeBetweenLoops):
 def mainLoop():
     url_info = GetPosts()
     #GetPosts returns this list if it finds a url match
-    if url_info[6]:
-        ID = url_info[0]
-        POST = url_info[3]
-        TITLE = str(url_info[4])
-        URL = url_info[5]
-        STime = ConvertMtoS(url_info[1], url_info[2])
+    if url_info:
+        ID = url_info["ID"]
+        POST = url_info["POST"]
+        TITLE = url_info["TITLE"]
+        URL = url_info["URL"]
+        
+        
+        STime = MakeTime(url_info["HRS"], url_info["MIN"], url_info["SEC"])
         
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
-        print("Would be DOWNLOADING")
         
         
-        Need to email this file to the mobile upload link
+        #Need to email this file to the mobile upload link
         se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
         
         LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
