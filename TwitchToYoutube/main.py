@@ -2,6 +2,7 @@ import twitchdownloader as td
 import FormatVideoFile as fvd
 import YoutubeLink as yl
 import SendEmail as se
+import os
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import re
@@ -144,10 +145,15 @@ def mainLoop():
         
         LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
         POST.add_comment(REPLYMESSAGE.format(LINK))
+        print("Comment reply success")
         
         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
         sql.commit()
-        print("Comment reply success")
+        
+        os.remove(ID)
+        os.remove(ID+".flv_edited.mp4")
+        print("Deleted Files")
+        
     else:
         print("No link found this time")
         
