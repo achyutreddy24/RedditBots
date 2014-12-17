@@ -1,10 +1,10 @@
 import moviepy.editor as me
-import importlib
+#import importlib
 import os
 
 
 def GetVideoSection(fileName, startTime, endTime):
-    fvd = importlib.reload(me) #Moviepy crashes when converting a second video, workaround for now
+    #fvd = importlib.reload(me) #Moviepy crashes when converting a second video, workaround for now
     # Load file and select the subclip
     clip = me.VideoFileClip(fileName).resize(width=1280, height=720).subclip(startTime,endTime)
     
