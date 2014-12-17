@@ -157,10 +157,12 @@ def mainLoop():
     else:
         print("No link found this time")
         
-while True:
-    try:
-        mainLoop()
-    except Exception as e:
-        print("ERROR:", e)
-    print('Sleeping ' + str(WAIT) + ' seconds.\n')
-    time.sleep(WAIT)
+#while True:
+#    try:
+#        mainLoop()
+#    except Exception as e:
+#        print("ERROR:", e)
+#    print('Sleeping ' + str(WAIT) + ' seconds.\n')
+#    time.sleep(WAIT)
+
+mainLoop()
