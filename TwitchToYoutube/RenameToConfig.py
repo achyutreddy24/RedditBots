@@ -24,8 +24,7 @@ REPLYMESSAGE ="""
 
 VIDEOLENGTH = 60
 #This is how long the video will be in seconds
-FPS = 30
-#How many frames per second the final video will be
+
 
 YOUTUBEVIDEOSPAGE = "https://www.youtube.com/channel/UCAoktq8B395WJljEcIANALw/videos"
 #This is the link to your videos page in youtube, for example
