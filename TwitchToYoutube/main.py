@@ -131,6 +131,9 @@ def mainLoop():
         ID = url_info["ID"]
         POST = url_info["POST"]
         TITLE = url_info["TITLE"]
+        #Truncates the title to match youtube's 95 character limit
+        TITLE = (data[:90] + '...') if len(TITLE) > 90 else TITLE
+        
         URL = url_info["URL"]
         
         
