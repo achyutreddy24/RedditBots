@@ -125,7 +125,7 @@ def LoopVideoCheck(titleOfVideo):
         sys.stdout.flush()
         time.sleep(1)
         count = count + 1
-    stdout.write("\n")
+    sys.stdout.write("\n")
     return UploadStatus
     
 
@@ -152,7 +152,7 @@ def mainLoop():
             #Need to email this file to the mobile upload link
             se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
             
-            LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
+            LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
             POST.add_comment(REPLYMESSAGE.format(LINK))
             print("Comment reply success")
         except Exception as e:
