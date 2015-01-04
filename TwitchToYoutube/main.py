@@ -3,6 +3,7 @@ import FormatVideoFile as fvd
 import YoutubeLink as yl
 import SendEmail as se
 import os
+import sys
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import re
@@ -113,14 +114,18 @@ def CutVideo(fileName, startTime, endTime):
     """Cuts the video files"""
     fvd.GetVideoSection(fileName, startTime, endTime)
   
-def LoopVideoCheck(titleOfVideo, TimeBetweenLoops):
+def LoopVideoCheck(titleOfVideo):
     UploadStatus = yl.CheckIfUploaded(titleOfVideo)
+    count = 1
     while UploadStatus is None:
         UploadStatus = yl.CheckIfUploaded(titleOfVideo)
         if UploadStatus:
             return UploadStatus #YoutubeLink
-        print('Sleeping ' + str(TimeBetweenLoops) + ' seconds to wait for video upload.\n')
-        time.sleep(TimeBetweenLoops)
+        sys.stdout.write("\rSleeping {} seconds to wait for video upload.".format(str(count)))
+        sys.stdout.flush()
+        time.sleep(1)
+        count = count + 1
+    stdout.write("\n")
     return UploadStatus
     
 
@@ -132,7 +137,7 @@ def mainLoop():
         POST = url_info["POST"]
         TITLE = url_info["TITLE"]
         #Truncates the title to match youtube's 95 character limit
-        TITLE = (data[:90] + '...') if len(TITLE) > 90 else TITLE
+        TITLE = (TITLE[:90] + '...') if len(TITLE) > 90 else TITLE
         
         URL = url_info["URL"]
         
@@ -140,15 +145,18 @@ def mainLoop():
         STime = MakeTime(url_info["HRS"], url_info["MIN"], url_info["SEC"])
         
         StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
-        CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
         
-        
-        #Need to email this file to the mobile upload link
-        se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
-        
-        LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
-        POST.add_comment(REPLYMESSAGE.format(LINK))
-        print("Comment reply success")
+        try:
+            CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
+            
+            #Need to email this file to the mobile upload link
+            se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
+            
+            LINK = LoopVideoCheck(TITLE, 10) #Keeps Looping until uploaded video is detected
+            POST.add_comment(REPLYMESSAGE.format(LINK))
+            print("Comment reply success")
+        except Exception as e:
+            LINK = "ERROR: " + e
         
         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
         sql.commit()
