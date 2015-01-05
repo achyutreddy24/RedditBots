@@ -156,7 +156,7 @@ def mainLoop():
             POST.add_comment(REPLYMESSAGE.format(LINK))
             print("Comment reply success")
         except Exception as e:
-            LINK = "ERROR: " + e
+            LINK = "ERROR: " + str(e)
         
         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
         sql.commit()
