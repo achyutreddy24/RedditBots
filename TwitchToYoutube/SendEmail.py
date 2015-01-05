@@ -25,7 +25,7 @@ def send_mail(send_from, send_to, subject, text, files=None):
     
     print(subject)
     
-    cur.execute('SELECT * FROM posts WHERE TITLE=?', [subject])
+    cur.execute('SELECT * FROM emails WHERE TITLE=?', [subject])
     if not cur.fetchone():
         msg = MIMEMultipart(
             From=send_from,
