@@ -121,6 +121,9 @@ def LoopVideoCheck(titleOfVideo):
         UploadStatus = yl.CheckIfUploaded(titleOfVideo)
         if UploadStatus:
             return UploadStatus #YoutubeLink
+        if count > 3600:
+            print("Waited 1 hour, breaking loop")
+            break
         sys.stdout.write("\rSleeping {} seconds to wait for video upload.".format(str(count)))
         sys.stdout.flush()
         time.sleep(1)
