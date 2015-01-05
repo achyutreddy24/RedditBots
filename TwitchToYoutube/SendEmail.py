@@ -39,6 +39,7 @@ def send_mail(send_from, send_to, subject, text, files=None):
     try:
         server.login(EUSERNAME, EPASSWORD)
         server.sendmail(send_from, send_to, msg.as_string())
+        print("Email Sent, Title is:",subject)
     except smtplib.SMTPAuthenticationError:
         print("Invalid Password!")
     server.close()

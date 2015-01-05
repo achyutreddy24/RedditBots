@@ -151,7 +151,6 @@ def mainLoop():
             
             #Need to email this file to the mobile upload link
             se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
-            print("E-Mail Sent")
             
             LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
             POST.add_comment(REPLYMESSAGE.format(LINK))
