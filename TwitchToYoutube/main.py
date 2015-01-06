@@ -2,6 +2,7 @@ import twitchdownloader as td
 import FormatVideoFile as fvd
 import YoutubeLink as yl
 import SendEmail as se
+import upload as upl
 import os
 import sys
 import praw # simple interface to the reddit API, also handles rate limiting of requests
@@ -153,7 +154,8 @@ def mainLoop():
             CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
             
             #Need to email this file to the mobile upload link
-            se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
+            #se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
+            upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
             
             LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
             POST.add_comment(REPLYMESSAGE.format(LINK))
