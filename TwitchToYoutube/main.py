@@ -154,7 +154,7 @@ def mainLoop():
             StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         except Exception as e:
             print("Twitch Error is: "+str(e))
-            LINK = "Twitch Error" + str(e)
+            LINK = "Twitch Error " + str(e)
         
         if StartingTime:
             try:
@@ -181,7 +181,7 @@ def mainLoop():
         
         #os.remove(ID+".flv")
         #os.remove(ID+".flv_edited.mp4")
-        print("Deleted Files")
+        #print("Deleted Files")
         
     else:
         print("No link found this time")
