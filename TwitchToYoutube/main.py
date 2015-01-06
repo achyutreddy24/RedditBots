@@ -145,18 +145,18 @@ def mainLoop():
         
         URL = url_info["URL"]
         
+        LINK = ""
         
         STime = MakeTime(url_info["HRS"], url_info["MIN"], url_info["SEC"])
         
-        DontDo = True
+        StartingTime = None
         try:
             StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         except Exception as e:
             print("Twitch Error is: "+str(e))
             LINK = "Twitch Error" + str(e)
-            DontDo = True
         
-        if DontDo == False:
+        if StartingTime:
             try:
                 CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
                 
