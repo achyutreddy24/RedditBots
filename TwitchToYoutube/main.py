@@ -169,8 +169,8 @@ def mainLoop():
         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
         sql.commit()
         
-        os.remove(ID+".flv")
-        os.remove(ID+".flv_edited.mp4")
+        #os.remove(ID+".flv")
+        #os.remove(ID+".flv_edited.mp4")
         print("Deleted Files")
         
     else:
