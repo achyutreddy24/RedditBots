@@ -15,11 +15,11 @@ def GetVideoSection(fileName, startTime, endTime):
     
     statinfo = os.stat(fileName+'_edited.mp4')
     
-    newFPS = 30
-    while statinfo.st_size > 25000000:
-        newFPS = newFPS - 5
-        print("File is too big for e-mail, lowering fps")
-        clip = me.VideoFileClip(fileName+'_edited.mp4')
-        
-        final_clip.to_videofile(fileName+"_edited.mp4",fps=newFPS)
-        statinfo = os.stat(fileName+'_edited.mp4')
+    #newFPS = 30
+    #while statinfo.st_size > 25000000:
+    #    newFPS = newFPS - 5
+    #    print("File is too big for e-mail, lowering fps")
+    #    clip = me.VideoFileClip(fileName+'_edited.mp4')
+    #    
+    #    final_clip.to_videofile(fileName+"_edited.mp4",fps=newFPS)
+    #    statinfo = os.stat(fileName+'_edited.mp4')
