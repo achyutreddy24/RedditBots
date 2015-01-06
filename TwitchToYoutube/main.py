@@ -141,7 +141,7 @@ def mainLoop():
         POST = url_info["POST"]
         TITLE = url_info["TITLE"]
 
-        title_matched = re.match(time_in_title, TITLE)
+        title_matched = re.search(time_in_title, TITLE)
         new_time = 0
         if title_matched:
             minutes = int(title_matched.group(1))
