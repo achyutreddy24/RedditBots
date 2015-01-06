@@ -148,23 +148,33 @@ def mainLoop():
         
         STime = MakeTime(url_info["HRS"], url_info["MIN"], url_info["SEC"])
         
-        StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
-        
+        DontDo = True
         try:
-            CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
-            
-            #Need to email this file to the mobile upload link
-            #Old command replaced with google api now
-            #se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
-            #LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
-            
-            
-            #Uploads with google api
-            LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
-            POST.add_comment(REPLYMESSAGE.format(LINK))
-            print("Comment reply success")
+            StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
         except Exception as e:
-            LINK = "ERROR: " + str(e)
+            print("Twitch Error is: "+str(e))
+            LINK = "Twitch Error" + str(e)
+            DontDo = True
+        
+        if DontDo == False:
+            try:
+                CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
+                
+                #Need to email this file to the mobile upload link
+                #Old command replaced with google api now
+                #se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
+                #LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
+                
+                
+                #Uploads with google api
+                LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
+                POST.add_comment(REPLYMESSAGE.format(LINK))
+                print("Comment reply success")
+            except Exception as e:
+                LINK = "ERROR: " + str(e)
+        else:
+            pass
+        
         
         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [ID, TITLE, URL, LINK])
         sql.commit()
