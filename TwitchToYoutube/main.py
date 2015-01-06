@@ -44,7 +44,7 @@ except ImportError:
 # SAMPLE LINK
 # http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
-time_in_title = re.compile("""{{(\d):(\d)}}""")
+time_in_title = re.compile("""{{(\d*):(\d*)}}""")
 
 # Logs into reddit
 r = praw.Reddit(USERAGENT)
@@ -104,7 +104,7 @@ def GetPosts():
                 print("Will not reply to self")
         else:
             print("Already replied to that")
-				
+
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
     """Figures out which chunk to download and where the segment is in that chunk"""
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
@@ -142,9 +142,11 @@ def mainLoop():
         TITLE = url_info["TITLE"]
 
         title_matched = re.match(time_in_title, TITLE)
-        minutes = int(title_matched.group(1))
-        seconds = int(title_matched.group(2))
-        new_time = MakeTime(Minutes=minutes, Seconds=seconds)
+        new_time = 0
+        if title_matched:
+            minutes = int(title_matched.group(1))
+            seconds = int(title_matched.group(2))
+            new_time = MakeTime(Minutes=minutes, Seconds=seconds)
         # Sets video length to time found in title
         video_length = new_time if new_time < 600 and new_time > 30 else VIDEOLENGTH
 
