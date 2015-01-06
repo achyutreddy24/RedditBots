@@ -156,11 +156,11 @@ def mainLoop():
             #Need to email this file to the mobile upload link
             #Old command replaced with google api now
             #se.send_mail(EUSERNAME, UPLOADLINK, TITLE, VIDEODESCRIPTION.format(URL), files=[ID+".flv_edited.mp4"])
+            #LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
+            
             
             #Uploads with google api
-            upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
-            
-            LINK = LoopVideoCheck(TITLE) #Keeps Looping until uploaded video is detected
+            LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
             POST.add_comment(REPLYMESSAGE.format(LINK))
             print("Comment reply success")
         except Exception as e:
