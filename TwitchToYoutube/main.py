@@ -45,6 +45,7 @@ except ImportError:
 #SAMPLE LINK
 #http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""") #("""http://www\.twitch\.tv\/.+\/b\/(\d+)(?:\?t=(\d+)m(\d+)s)""")
+time_in_title = re.compile("""{{(\d):(\d)}}""")
 
 #Logs into reddit
 r = praw.Reddit(USERAGENT)
@@ -140,13 +141,19 @@ def mainLoop():
         ID = url_info["ID"]
         POST = url_info["POST"]
         TITLE = url_info["TITLE"]
+        
+        title_matched = re.match(time_in_title, TITLE)
+        minutes = int(title_matched.group(1))
+        seconds = int(title_matched.group(2))
+        new_time = MakeTime(Minutes=minutes, Seconds=seconds)
+        #Sets video length to time found in title
+        video_length = new_time if new_time < 600 and new_time > 30 else VIDEOLENGTH
+        
         #Truncates the title to match youtube's 95 character limit
         TITLE = (TITLE[:90] + '...') if len(TITLE) > 90 else TITLE
         
         URL = url_info["URL"]
-        
-        LINK = ""
-        
+
         STime = MakeTime(url_info["HRS"], url_info["MIN"], url_info["SEC"])
         
         StartingTime = None
@@ -158,7 +165,7 @@ def mainLoop():
         
         if StartingTime:
             try:
-                CutVideo(ID+".flv", StartingTime, StartingTime+VIDEOLENGTH)
+                CutVideo(ID+".flv", StartingTime, StartingTime+video_length)
                 
                 #Need to email this file to the mobile upload link
                 #Old command replaced with google api now
