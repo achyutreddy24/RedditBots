@@ -13,7 +13,7 @@ WAIT = 3600
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 
 REPLYMESSAGE ="""
-[Here is a YouTube mirror for that specific time in the twitch VOD](http://www.youtube.com{0})
+[Here is a YouTube mirror for that specific time in the twitch VOD]({0})
 
 
 ^This ^action ^was ^performed ^by ^a ^bot, ^please ^message ^the ^creator ^/u/FusionGaming ^for ^more ^information
