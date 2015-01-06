@@ -179,6 +179,7 @@ def mainLoop():
                     LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
                 except:
                     if LINK is None:
+                        print("upload returned none, running LoopVideoCheck")
                         LINK = LoopVideoCheck(TITLE) # Keeps Looping until uploaded video is detected
                         
                 POST.add_comment(REPLYMESSAGE.format(LINK))
