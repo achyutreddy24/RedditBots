@@ -4,6 +4,7 @@ import praw  # simple interface to the reddit API
 import time
 import re
 import sqlite3
+import requests
 
 import twitchdownloader as td
 import FormatVideoFile as fvd
@@ -30,6 +31,7 @@ try:
     MAXPOSTS = Config.MAXPOSTS
     REPLYMESSAGE = Config.REPLYMESSAGE
     WAIT = Config.WAIT
+    EXCLUDEDSUBS = Config.EXCLUDEDSUBS
 
     VIDEOLENGTH = Config.VIDEOLENGTH
 
@@ -45,6 +47,7 @@ except ImportError:
 # http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
 time_in_title = re.compile("""{{(\d+):(\d+)}}""")
+extract_subreddit = re.compile("""\/r\/(.+?)\/""")
 
 # Logs into reddit
 r = praw.Reddit(USERAGENT)
@@ -73,6 +76,17 @@ def MakeTime(Hours, Minutes, Seconds):
         Seconds = 0
     return ConvertMtoS(Hours, Minutes, Seconds)
     
+def expand_short_url(link):
+    response = requests.get('http://api.longurl.org/v2/expand?url={url}&format=json'.format(url=link))
+    return response.json()['long-url']
+
+def get_subreddit(post):
+    url = post.short_link
+    long_url = expand_short_url(url)
+    sub = re.search(extract_subreddit, long_url)
+    return sub.group(1)
+    
+    
 
 
 def GetPosts():
@@ -92,6 +106,10 @@ def GetPosts():
                 if matched is None:
                     pass
                 else:
+                    sub = get_subreddit(post)
+                    print('Sub is '+ sub)
+                    if sub in EXCLUDEDSUBS:
+                        continue
                     rID = matched.group(1)
                     rHRS = matched.group(2)
                     rMIN = matched.group(3)

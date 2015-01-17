@@ -12,6 +12,8 @@ MAXPOSTS = 100
 WAIT = 3600
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 
+EXCLUDEDSUBS = []
+
 REPLYMESSAGE ="""
 [Here is a YouTube mirror for that specific time in the twitch VOD]({0})
 
