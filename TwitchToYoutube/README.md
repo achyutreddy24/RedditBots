@@ -1,0 +1,1 @@
+This is a reddit bot that searches for a twitch past broadcast link, it then downloads the broadcast and edits it to a specific time. It then uploads the video to youtube and posts it in the reddit comments. 
