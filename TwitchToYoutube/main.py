@@ -77,7 +77,7 @@ def MakeTime(Hours, Minutes, Seconds):
     return ConvertMtoS(Hours, Minutes, Seconds)
     
 def expand_short_url(link):
-    response = requests.get('http://api.longurl.org/v2/expand?url={url}&format=json'.format(url=link))
+    response = requests.get('http://api.longurl.org/v2/expand?url={url}&format=json&user-agent=TwitchToYoutubeRedditBot-see-reddit.com/r/TwitchToYoutubeBot'.format(url=link))
     return response.json()['long-url']
 
 def get_subreddit(post):
@@ -97,7 +97,12 @@ def GetPosts():
     # posts = subreddit.get_new(limit=MAXPOSTS)
     for post in posts:
         print(post.url)
+        print("NSFW "+str(post.over_18))
+        #If post is nsfw, it skips
+        if post.over_18:
+            continue
         cur.execute('SELECT * FROM posts WHERE TLINK=?', [post.url])
+        #only executes if twitchlink is not in database
         if not cur.fetchone():
             print("HAVENOTREPLIED")
             if post.is_self is False:
