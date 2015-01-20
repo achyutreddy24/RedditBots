@@ -114,6 +114,8 @@ def GetPosts():
                     sub = get_subreddit(post)
                     print('Sub is '+ sub)
                     if sub in EXCLUDEDSUBS:
+                        print('Sub is Excluded')
+                        cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [pid, post.title, post.url, 'EXCLUDEDSUB'])
                         continue
                     rID = matched.group(1)
                     rHRS = matched.group(2)
