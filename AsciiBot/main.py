@@ -7,7 +7,7 @@ cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, ILink TEXT)')
 print('Loaded SQL Database')
 sql.commit()
 
-NormalChars = [' ','1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','x','.',',',':','/'',"/"",'(',')','[',']']
+NormalChars = [' ','1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','x','.',',',':','/',"/",'(',')','[',']','^']
 
 #  Import Settings from Config.py
 try:
@@ -22,6 +22,11 @@ try:
 except ImportError:
     print("Error Importing Config.py")
     
+def occurances(str, chars):
+    count = 0
+    for char in chars:
+        count = count + str.count(c)
+    return count
 
 def scan():
     print('Searching '+ SUBREDDIT + '.')
@@ -36,7 +41,7 @@ def scan():
             sql.commit()
             cbody = comment.body.lower()
             
-            
+            occurances(cbody, NormalChars)
             
             if any(key.lower() in cbody for key in PARENTSTRING):
                 print('Replying to ' + pid + ' by ' + pauthor)
