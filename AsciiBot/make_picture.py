@@ -3,8 +3,7 @@ import subprocess
 import tkinter
 
 def make_png(filename, output):
-	filename_noext = input(']>> ')
-	filename_text = filename_noext.replace('.txt', '')
+	filename_noext = filename
 	filename_text = filename_noext + '.txt'
 	filename_ghost = filename_noext + '_render.ps'
 	filea = open(filename_text, 'r')
@@ -13,7 +12,7 @@ def make_png(filename, output):
 	lines_height = len(lines_split)
 	lines_width = len(lines_split[0])
 	print('%d x %d' % (lines_width, lines_height))
-	lines_height *= 17
+	lines_height *= 25
 	lines_width *= 14
 	filea.close()
 	t = tkinter.Tk()
@@ -23,5 +22,8 @@ def make_png(filename, output):
 	print('Writing Postscript')
 	c.postscript(file=filename_ghost, width=lines_width, height=lines_height)
 	t.destroy()
-	print('Writing PNG')
-	##subprocess.Popen('PNGCREATOR.bat', shell=True, cwd=os.getcwd())
+	print('Writing JPG')
+	#Uses ImageMagick convert (should be installed on most linux systems)
+	subprocess.call('convert {psfname} {pngfname}'.format(psfname=filename_ghost, pngfname=output+'.jpg'), shell=True)
+
+make_png('test2', 'test2')
