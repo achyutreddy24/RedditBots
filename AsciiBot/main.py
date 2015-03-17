@@ -58,8 +58,10 @@ def scan():
         cfullBody = comment.body
         cbody = comment.body.lower().replace(" ", "")
         Clink = comment.permalink
-        CO = occurances(cbody, NormalChars)
         clength = len(cbody)
+        if clength<5:
+            continue
+        CO = occurances(cbody, NormalChars)
         p = CO/clength
         print("CO is "+str(CO)+" cbody len is "+str(clength)+" per is "+str(p))
         if p<PERCENTAGE:
