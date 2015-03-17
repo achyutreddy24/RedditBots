@@ -2,7 +2,7 @@ import os
 import subprocess
 import tkinter
 
-def make_png(filename, output):
+def make_jpg(filename, output):
     filename_noext = filename
     filename_text = filename_noext + '.txt'
     filename_ghost = filename_noext + '_render.ps'
