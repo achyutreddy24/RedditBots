@@ -23,7 +23,7 @@ except ImportError:
     print("Error Importing Config.py")
     
 WAIT = 5
-PERCENTAGE = 0.3 #the percent of normal chars the comment has to be over to be considered ascii art.
+PERCENTAGE = 0.4 #the percent of normal chars the comment has to be over to be considered ascii art.
 
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
