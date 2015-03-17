@@ -55,16 +55,16 @@ def scan():
     for comment in comments:
         cid = comment.id
         cauthor = comment.author.name
-        cur.execute('SELECT * FROM posts WHERE CID=?', [cid])
-        if not cur.fetchone():
-            cfullBody = comment.body
-            cbody = comment.body.lower().replace(" ", "")
-            Clink = comment.permalink
-            CO = occurances(cbody, NormalChars)
-            clength = len(cbody)
-            p = CO/clength
-            print("CO is "+str(CO)+" cbody len is "+str(clength)+" per is "+str(p))
-            if ((CO/clength)<PERCENTAGE):
+        cfullBody = comment.body
+        cbody = comment.body.lower().replace(" ", "")
+        Clink = comment.permalink
+        CO = occurances(cbody, NormalChars)
+        clength = len(cbody)
+        p = CO/clength
+        print("CO is "+str(CO)+" cbody len is "+str(clength)+" per is "+str(p))
+        if p<PERCENTAGE:
+            cur.execute('SELECT * FROM posts WHERE CID=?', [cid])
+            if not cur.fetchone():
                 print("Found an ascii comment")
                 f = open('CurrentAscii.txt', 'w')
                 f.write(cfullBody)
@@ -79,8 +79,8 @@ def scan():
                 
                 cur.execute('INSERT INTO posts VALUES(?, ?, ?)', [cid, Clink, ILink])
                 sql.commit()
-            else:
-                print("Ignored")
+        else:
+            pass
                 
     
 while True:
