@@ -66,9 +66,12 @@ def scan():
             cur.execute('SELECT * FROM posts WHERE CID=?', [cid])
             if not cur.fetchone():
                 print("Found an ascii comment")
-                f = open('CurrentAscii.txt', 'w')
-                f.write(cfullBody)
-                f.close()
+                try:
+                    f = open('CurrentAscii.txt', 'w')
+                    f.write(cfullBody)
+                    f.close()
+                except Exception as e:
+                    print(cfullBody)
                 
                 mp.make_jpg('CurrentAscii', 'CurrentJPG')
                 ILink = upload_imgur('CurrentJPG.jpg')['link']
