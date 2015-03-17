@@ -61,8 +61,10 @@ def scan():
             cbody = comment.body.lower().replace(" ", "")
             Clink = comment.permalink
             CO = occurances(cbody, NormalChars)
-            print("CO is "+str(CO)+" cbody len is "+str(len(cbody))+" per is "+str(CO/len(cbody)))
-            if (CO/len(cbody)<PERCENTAGE):
+            clength = len(cbody)
+            p = CO/clength
+            print("CO is "+str(CO)+" cbody len is "+str(clength)+" per is "+str(p))
+            if ((CO/clength)<PERCENTAGE):
                 print("Found an ascii comment")
                 f = open('CurrentAscii.txt', 'w')
                 f.write(cfullBody)
