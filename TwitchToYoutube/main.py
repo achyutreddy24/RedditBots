@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import sys
 import praw  # simple interface to the reddit API
@@ -39,6 +40,7 @@ try:
     UPLOADLINK = Config.UPLOADLINK
     VIDEODESCRIPTION = Config.VIDEODESCRIPTION
     BASELINK = Config.BASELINK
+    print("Loaded Config")
 except ImportError:
     print("Error Importing Config.py")
 
