@@ -70,7 +70,7 @@ def scan():
                 
                 mp.make_jpg('CurrentAscii', 'CurrentJPG')
                 ILink = upload_imgur('CurrentJPG.jpg')['link']
-                print(ILink['link'])
+                print(ILink)
             
                 print('Replying to ' + cid + ' by ' + cauthor)
                 comment.reply(REPLYMESSAGE.format(ILink))
