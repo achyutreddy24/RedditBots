@@ -40,9 +40,7 @@ def scan():
             cur.execute('INSERT INTO posts VALUES(?)', [cid])
             sql.commit()
             cbody = comment.body.lower()
-            
-            occurances(cbody, NormalChars)
-            
-            if any(key.lower() in cbody for key in PARENTSTRING):
-                print('Replying to ' + pid + ' by ' + pauthor)
+            CO = occurances(cbody, NormalChars)            
+            if (CO/len(cbody)>70):
+                print('Replying to ' + cid + ' by ' + cauthor)
                 post.reply(REPLYMESSAGE.format("""IMGUR LINK"""))
