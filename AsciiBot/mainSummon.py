@@ -23,21 +23,17 @@ except ImportError:
     print("Error Importing Config.py")
     
 WAIT = 5
-PERCENTAGE = 0.4 #the percent of normal chars the comment has to be over to be considered ascii art.
 
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
 img = ImgurClient(ID, SECRET)
 
-sql = sqlite3.connect('sql.db')
+sql = sqlite3.connect('sqlSummon.db')
 cur = sql.cursor()
-cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink, ILink TEXT)')
+cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink TEXT, CLinkParent TEXT, ILink TEXT)')
 print('Loaded SQL Database')
 sql.commit()
-
-NormalChars = ['1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','x','.',',','/',"/",'(',')','[',']','^']
-
 
 def occurances(str, chars):
     count = 0
@@ -56,13 +52,9 @@ def scan():
         cid = comment.id
         cauthor = comment.author.name
         cfullBody = comment.body
-        cbody = comment.body.lower().replace(" ", "")
+        cbody = comment.body.lower()
         Clink = comment.permalink
-        clength = len(cbody)
-        if clength<5:
-            continue
-        CO = occurances(cbody, NormalChars)
-        p = CO/clength
+
         print("CO is "+str(CO)+" cbody len is "+str(clength)+" per is "+str(p))
         if p<PERCENTAGE:
             cur.execute('SELECT * FROM posts WHERE CID=?', [cid])

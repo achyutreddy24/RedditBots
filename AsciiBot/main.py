@@ -32,7 +32,7 @@ img = ImgurClient(ID, SECRET)
 
 sql = sqlite3.connect('sql.db')
 cur = sql.cursor()
-cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink, ILink TEXT)')
+cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink TEXT, ILink TEXT)')
 print('Loaded SQL Database')
 sql.commit()
 
