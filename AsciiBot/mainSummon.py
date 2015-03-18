@@ -49,8 +49,7 @@ def upload_imgur(filename):
 
 def scan():
     print('Searching '+ SUBREDDIT + '.')
-    subreddit = r.get_subreddit(SUBREDDIT)
-    comments = subreddit.get_comments(limit=MAXPOSTS)
+    comments = r.get_mentions(limit=MAXPOSTS)
     for comment in comments:
         
         cbody = comment.body.lower()
