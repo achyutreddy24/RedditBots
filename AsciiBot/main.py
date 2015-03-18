@@ -36,7 +36,7 @@ cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink, ILink TEXT)')
 print('Loaded SQL Database')
 sql.commit()
 
-NormalChars = ['1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','x','.',',','/',"/",'(',')','[',']','^']
+NormalChars = ['1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','x','.',',','/',"/",'(',')','[',']','^','/', '\\']
 
 
 def occurances(str, chars):
@@ -59,7 +59,7 @@ def scan():
         cbody = comment.body.lower().replace(" ", "")
         Clink = comment.permalink
         clength = len(cbody)
-        if clength<5:
+        if clength<15:
             continue
         CO = occurances(cbody, NormalChars)
         p = CO/clength
