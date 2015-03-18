@@ -1,6 +1,7 @@
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 import sqlite3
+import html
 from imgurpython import ImgurClient
 
 import make_picture as mp
@@ -68,7 +69,7 @@ def scan():
             print("Found a summon comment")
             
             parent = r.get_info(thing_id=comment.parent_id)
-            pbody = parent.body
+            pbody = html.unescape(parent.body)
             ClinkParent = parent.permalink
             
             print("Writing txt file")
