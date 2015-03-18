@@ -14,13 +14,13 @@ def make_jpg(filename, output):
     lines_height = len(lines_split)
     lines_width = len(lines_split[0])
     print('%d x %d' % (lines_width, lines_height))
-    lines_height *= 25
-    lines_width *= 14
+    lines_height *= 75
+    lines_width *= 50
     filea.close()
     t = tkinter.Tk()
     c = tkinter.Canvas(t, width=lines_width, height=lines_height)
     c.pack()
-    c.create_text(0, 0, text=lines, anchor="nw", font=("Courier New", 12))
+    c.create_text(0, 0, text=lines, anchor="nw", font=("Courier New", 36))
     print('Writing Postscript')
     c.postscript(file=filename_ghost, width=lines_width, height=lines_height)
     t.destroy()
