@@ -5,8 +5,6 @@ PASSWORD  = ""
 #This is the bot's Password. 
 USERAGENT = ""
 #This bot gets a twitch link and uploads the equivalent youtube mirror for 1 minute after the timestamp."
-SUBREDDIT = "all"
-#This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
 MAXPOSTS = 100
 #This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
 
@@ -15,6 +13,8 @@ REPLYMESSAGE ="""
 
 ---
 ^^This ^^action ^^was ^^performed ^^by ^^a ^^bot, ^^please ^^message ^^the ^^creator ^^/u/FusionGaming ^^for ^^more ^^information ^^and ^^to ^^report ^^bugs.
+
+^^Anyone ^^can ^^summon ^^me ^^by ^^typing ^^+/u/Ascii-Text-Bot ^^and ^^I ^^will ^^respond ^^with ^^a ^^image ^^of ^^the ^^parent ^^text
 """
 """END REDDIT CONFIG"""
 

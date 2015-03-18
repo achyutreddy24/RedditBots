@@ -14,7 +14,6 @@ try:
     USERNAME = Config.USERNAME
     PASSWORD = Config.PASSWORD
     USERAGENT = Config.USERAGENT
-    SUBREDDIT = Config.SUBREDDIT
     MAXPOSTS = Config.MAXPOSTS
     REPLYMESSAGE = Config.REPLYMESSAGE
     
@@ -48,7 +47,6 @@ def upload_imgur(filename):
     return img.upload_from_path(filename, anon=True)
 
 def scan():
-    print('Searching '+ SUBREDDIT + '.')
     comments = r.get_mentions(limit=MAXPOSTS)
     for comment in comments:
         
