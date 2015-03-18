@@ -1,3 +1,5 @@
+#Code from here http://www.reddit.com/r/RequestABot/comments/2z6wbj/request_a_comment_screenshot_bot_for_ascii/cpg83tt
+
 import os
 import subprocess
 import tkinter
