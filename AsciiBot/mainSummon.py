@@ -54,9 +54,11 @@ def scan():
         Clink = comment.permalink
         cid = comment.id
         
-        if comment.is_root:
-            print("Comment is root, ignoring")
-            continue
+        print(comment.created_utc)
+        
+        #if comment.is_root:
+        #    print("Comment is root, ignoring")
+        #    continue
         if SUMMONTEXT not in cbody:
             print("summontext not found, ignoring")
             continue
@@ -66,8 +68,12 @@ def scan():
             print("Found a summon comment")
             
             parent = r.get_info(thing_id=comment.parent_id)
-            pbody = html.unescape(parent.body)
-            ClinkParent = parent.permalink
+            try:
+                pbody = html.unescape(parent.body)
+                ClinkParent = parent.permalink
+            except Exception as e:
+                pbody = html.unescape(parent.selftext)
+                ClinkParent = parent.permalink
             
             print("Writing txt file")
             f = open('CurrentAscii.txt', 'w', encoding='utf-8')
