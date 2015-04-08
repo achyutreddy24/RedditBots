@@ -9,18 +9,18 @@ import praw # simple interface to the reddit API, also handles rate limiting of 
 
 resp = urllib.request.urlopen("http://rudaw.net/NewsListing.aspx?pageid=528")
 soup = BeautifulSoup(resp.read(), from_encoding=resp.info().get_param('charset'))
-
-USERNAME  = "Convertor-Bot"
-#This is the bot's Username. In order to send mail, he must have some amount of Karma.
-PASSWORD  = "Convertor-BotGO"
-#This is the bot's Password. 
-USERAGENT = ""
-#This is a short description of what the bot does. For example "/u/GoldenSights' Newsletter bot"
-SUBREDDIT = ""
-#This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
-MAXPOSTS = 100
-#This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
-WAIT = 3600
+try:
+    import Config
+    USERNAME = Config.USERNAME
+    PASSWORD = Config.PASSWORD
+    USERAGENT = Config.USERAGENT
+    SUBREDDIT = Config.SUBREDDIT
+    MAXPOSTS = Config.MAXPOSTS
+    print("Loaded Config")
+except ImportError:
+    print("Error Importing Config.py")
+    
+WAIT = 20
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 WAITS = str(WAIT)
 
