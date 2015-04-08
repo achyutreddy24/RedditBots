@@ -3,21 +3,16 @@ import praw # simple interface to the reddit API, also handles rate limiting of 
 import time
 import re
 import sqlite3
-
-'''USER CONFIGURATION'''
-
-USERNAME  = "Convertor-Bot"
-#This is the bot's Username. In order to send mail, he must have some amount of Karma.
-PASSWORD  = "Convertor-BotGO"
-#This is the bot's Password. 
-USERAGENT = "/u/FusionGaming's bot. Converts from one unit into another unit"
-#This is a short description of what the bot does. For example "/u/GoldenSights' Newsletter bot"
-SUBREDDIT = "Fusion_Gaming"
-#This is the sub or list of subs to scan for new posts. For a single sub, use "sub1". For multiple subreddits, use "sub1+sub2+sub3+..."
-REPLYSTRING = "Found it!"
-#This is the word you want to put in reply
-MAXPOSTS = 100
-#This is how many posts you want to retrieve all at once. PRAW can download 100 at a time.
+try:
+    import Config
+    USERNAME = Config.USERNAME
+    PASSWORD = Config.PASSWORD
+    USERAGENT = Config.USERAGENT
+    SUBREDDIT = Config.SUBREDDIT
+    MAXPOSTS = Config.MAXPOSTS
+    print("Loaded Config")
+except ImportError:
+    print("Error Importing Config.py")
 WAIT = 20
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 
