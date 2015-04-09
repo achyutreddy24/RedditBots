@@ -135,7 +135,7 @@ def GetPosts():
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
     """Figures out which chunk to download and where the segment is in that chunk"""
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
-    td.download_broadcast(ID, chunk_info[0])
+#    td.download_broadcast(ID, chunk_info[0])
     return chunk_info[1]
     
 def CutVideo(fileName, startTime, endTime):
@@ -184,6 +184,7 @@ def mainLoop():
 
         STime = MakeTime(url_info["HRS"], url_info["MIN"], url_info["SEC"])
 
+        LINK = ""
         StartingTime = None
         try:
             StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
@@ -206,8 +207,8 @@ def mainLoop():
                     LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
                 except:
                     if LINK is None:
-                        print("upload returned none, running LoopVideoCheck")
-                        LINK = LoopVideoCheck(TITLE) # Keeps Looping until uploaded video is detected
+                       print("upload returned none, running LoopVideoCheck")
+                       LINK = LoopVideoCheck(TITLE) # Keeps Looping until uploaded video is detected
                         
                 POST.add_comment(REPLYMESSAGE.format(LINK))
                 print("Comment reply success")
