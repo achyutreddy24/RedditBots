@@ -205,7 +205,10 @@ def mainLoop():
                 # Uploads with google api
                 try:
                     LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
-                except:
+                except Exception as err:
+                    import traceback
+                    traceback.print_exc()
+                    print(err)
                     if LINK is None:
                        print("upload returned none, running LoopVideoCheck")
                        LINK = LoopVideoCheck(TITLE) # Keeps Looping until uploaded video is detected
