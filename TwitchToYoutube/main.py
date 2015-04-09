@@ -16,9 +16,9 @@ import upload as upl
 #  Example of link
 #  http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
 
-import moviepy.config
+#import moviepy.config
 #  Delete this if moviepy is set up correctly already or change it to your path
-moviepy.config.change_settings({"FFMPEG_BINARY": r"C:\FFMPEG\bin\ffmpeg.exe"})
+#moviepy.config.change_settings({"FFMPEG_BINARY": r"C:\FFMPEG\bin\ffmpeg.exe"})
 #  print(moviepy.config.get_setting("FFMPEG_BINARY"))
 
 
