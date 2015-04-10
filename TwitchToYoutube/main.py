@@ -135,7 +135,7 @@ def GetPosts():
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
     """Figures out which chunk to download and where the segment is in that chunk"""
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
-#    td.download_broadcast(ID, chunk_info[0])
+    td.download_broadcast(ID, chunk_info[0])
     return chunk_info[1]
     
 def CutVideo(fileName, startTime, endTime):
