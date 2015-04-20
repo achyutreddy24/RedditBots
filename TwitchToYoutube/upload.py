@@ -168,7 +168,7 @@ help="Numeric video category. " +
 argparser.add_argument("--keywords", help="Video keywords, comma separated",
 default="")
 argparser.add_argument("--privacyStatus", choices=VALID_PRIVACY_STATUSES,
-default="unlisted", help="Video privacy status.")
+default="public", help="Video privacy status.")
       
 def upload(file, title, desc):
     args = argparser.parse_args()

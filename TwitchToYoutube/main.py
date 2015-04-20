@@ -88,12 +88,65 @@ def get_subreddit(post):
     sub = re.search(extract_subreddit, long_url)
     return sub.group(1)
     
-    
 
+def GetMentions():
+    comments = r.get_mentions(limit=MAXPOSTS)
+    for comment in comments:
+        
+        cbody = comment.body.lower()
+        Clink = comment.permalink
+        cid = comment.id
+
+        cur.execute('SELECT * FROM posts WHERE PID=?', ["C"+cid])
+        if not cur.fetchone():
+            print("Found a summon comment")
+        else:
+            print("Already replied to that comment")
+            continue
+
+        matched = re.match(url_pattern, cbody)
+        if matched is None:
+            pass
+        else:
+            rID = matched.group(1)
+            rHRS = matched.group(2)
+            rMIN = matched.group(3)
+            rSEC = matched.group(4)
+            
+            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":comment, "TITLE":Clink, "URL":matched.group(0)}
+            return dict
+
+        if comment.is_root:
+            continue
+
+        parent = r.get_info(thing_id=comment.parent_id)
+        cbody = parent.body.lower()
+        Clink = parent.permalink
+        cid = parent.id
+
+        cur.execute('SELECT * FROM posts WHERE PID=?', ["C"+cid])
+        if not cur.fetchone():
+            print("Found a summon comment")
+        else:
+            print("Already replied to that comment")
+            continue
+
+        matched = re.match(url_pattern, cbody)
+        if matched is None:
+            pass
+        else:
+            rID = matched.group(1)
+            rHRS = matched.group(2)
+            rMIN = matched.group(3)
+            rSEC = matched.group(4)
+            
+            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":parent, "TITLE":Clink, "URL":matched.group(0)}
+            return dict
+                
+        
 
 def GetPosts():
     """Finds twitch url and returns id and time"""
-    print('Searching '+ SUBREDDIT + '.')
     # subreddit = r.get_subreddit("Fusion_Gaming")
     posts = r.get_domain_listing('twitch.tv', sort='new',limit=MAXPOSTS)
     # posts = subreddit.get_new(limit=MAXPOSTS)
@@ -162,6 +215,8 @@ def LoopVideoCheck(titleOfVideo):
 
 def mainLoop():
     url_info = GetPosts()
+    if url_info is None:
+        url_info = GetMentions()
     # GetPosts returns this list if it finds a url match
     if url_info:
         ID = url_info["ID"]
@@ -213,7 +268,10 @@ def mainLoop():
                        print("upload returned none, running LoopVideoCheck")
                        LINK = LoopVideoCheck(TITLE) # Keeps Looping until uploaded video is detected
                         
-                POST.add_comment(REPLYMESSAGE.format(LINK))
+                try:
+                    POST.add_comment(REPLYMESSAGE.format(LINK))
+                except:
+                    POST.reply(REPLYMESSAGE.format(LINK))
                 print("Comment reply success")
             except Exception as e:
                 LINK = "ERROR: " + str(e)
