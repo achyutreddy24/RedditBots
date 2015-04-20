@@ -97,23 +97,23 @@ def GetMentions():
         Clink = comment.permalink
         cid = comment.id
 
-        cur.execute('SELECT * FROM posts WHERE PID=?', [cid])
-        if not cur.fetchone():
-            print("Found a summon comment")
-        else:
-            print("Already replied to that comment")
-            continue
-
         matched = re.match(url_pattern, cbody)
         if matched is None:
             pass
         else:
+            cur.execute('SELECT * FROM posts WHERE TLINK=?', [matched.group(0)])
+            if not cur.fetchone():
+                print("Found a summon comment")
+            else:
+                print("Already replied to that comment")
+                continue
+
             rID = matched.group(1)
             rHRS = matched.group(2)
             rMIN = matched.group(3)
             rSEC = matched.group(4)
             
-            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":comment, "TITLE":Clink, "URL":matched.group(0)}
+            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":comment, "TITLE":Clink, "URL":matched.group(0), "REPLYTO":comment}
             return dict
 
         if comment.is_root:
@@ -124,23 +124,23 @@ def GetMentions():
         Clink = parent.permalink
         cid = parent.id
 
-        cur.execute('SELECT * FROM posts WHERE PID=?', [cid])
-        if not cur.fetchone():
-            print("Found a summon comment")
-        else:
-            print("Already replied to that comment")
-            continue
-
         matched = re.match(url_pattern, cbody)
         if matched is None:
             pass
         else:
+            cur.execute('SELECT * FROM posts WHERE TLINK=?', [matched.group(0)])
+            if not cur.fetchone():
+                print("Found a summon parent")
+            else:
+                print("Already replied to that comment")
+                continue
+
             rID = matched.group(1)
             rHRS = matched.group(2)
             rMIN = matched.group(3)
             rSEC = matched.group(4)
             
-            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":parent, "TITLE":Clink, "URL":matched.group(0)}
+            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":parent, "TITLE":Clink, "URL":matched.group(0), "REPLYTO":comment}
             return dict
                 
         
@@ -261,8 +261,6 @@ def mainLoop():
                 try:
                     LINK = upl.upload(ID+".flv_edited.mp4", TITLE, VIDEODESCRIPTION.format(URL))
                 except Exception as err:
-                    import traceback
-                    traceback.print_exc()
                     print(err)
                     if LINK is None:
                        print("upload returned none, running LoopVideoCheck")
@@ -271,7 +269,7 @@ def mainLoop():
                 try:
                     POST.add_comment(REPLYMESSAGE.format(LINK))
                 except:
-                    POST.reply(REPLYMESSAGE.format(LINK))
+                    url_info["REPLYTO"].reply(REPLYMESSAGE.format(LINK))
                 print("Comment reply success")
             except Exception as e:
                 LINK = "ERROR: " + str(e)
