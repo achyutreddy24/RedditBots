@@ -97,7 +97,7 @@ def GetMentions():
         Clink = comment.permalink
         cid = comment.id
 
-        cur.execute('SELECT * FROM posts WHERE PID=?', ["C"+cid])
+        cur.execute('SELECT * FROM posts WHERE PID=?', [cid])
         if not cur.fetchone():
             print("Found a summon comment")
         else:
@@ -124,7 +124,7 @@ def GetMentions():
         Clink = parent.permalink
         cid = parent.id
 
-        cur.execute('SELECT * FROM posts WHERE PID=?', ["C"+cid])
+        cur.execute('SELECT * FROM posts WHERE PID=?', [cid])
         if not cur.fetchone():
             print("Found a summon comment")
         else:
