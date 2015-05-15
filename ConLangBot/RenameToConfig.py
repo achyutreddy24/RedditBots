@@ -1,7 +1,7 @@
 """REDDIT CONFIG"""
-USERNAME  = "FusionGaming"
+USERNAME  = ""
 #This is the bot's Username. In order to send mail, he must have some amount of Karma.
-PASSWORD  = "CoolCandy4"
+PASSWORD  = ""
 #This is the bot's Password. 
 USERAGENT = "/r/conlangs /u/FusionGaming"
 #This bot gets a twitch link and uploads the equivalent youtube mirror for 1 minute after the timestamp. /u/FusionGaming"
