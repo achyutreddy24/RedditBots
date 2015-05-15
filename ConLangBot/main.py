@@ -78,6 +78,10 @@ def scan():
             print("Found a summon comment")
             
             def_post = find_in_submission(word)
+
+            author = def_post.author
+            body = def_post.body
+            link = def_post.short_link
             
             print('Replying to ' + cid)
             comment.reply(REPLYMESSAGE.format(ILink))
