@@ -1,7 +1,8 @@
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
+import re
 
-SUMMONTEXT = """+/u/conlangbot"""
+SUMMONTEXT = """\+\/u\/conlangbot\s*\"([\s\S]+)\""""
 
 #  Import Settings from Config.py
 try:
@@ -48,7 +49,7 @@ def refresh_db(flairs):
         ssql.commit()
 
 
-def find_in_submissions(search_string, flairs):
+def find_in_submissions(search_string):
 	small.execute('select * from threads')
     for row in small:
         ID = row(0)
@@ -70,39 +71,17 @@ def scan():
         Clink = comment.permalink
         cid = comment.id
         
-        print(comment.created_utc)
-        
-        #if comment.is_root:
-        #    print("Comment is root, ignoring")
-        #    continue
-        if SUMMONTEXT not in cbody:
-            print("summontext not found, ignoring")
+
+        match = re.search(SUMMONTEXT, cbody)
+        if not match:
             continue
-                
+        word = match.group(1)        
         cur.execute('SELECT * FROM posts WHERE CID=?', [cid])
         if not cur.fetchone():
             print("Found a summon comment")
             
-            parent = r.get_info(thing_id=comment.parent_id)
-            try:
-                pbody = html.unescape(parent.body)
-                ClinkParent = parent.permalink
-            except Exception as e:
-                pbody = html.unescape(parent.selftext)
-                ClinkParent = parent.permalink
+            find_in_submission(word)
             
-            pbody = pbody.replace("\xc2\xa0", " ")
-            
-            print("Writing txt file")
-            f = open('CurrentAscii.txt', 'w', encoding='utf-32')
-            f.write(pbody)
-            f.close()
-            print('Wrote text file')
-            
-            mp.make_jpg('CurrentAscii', 'CurrentJPG')
-            ILink = upload_imgur('CurrentJPG.jpg')['link']
-            print(ILink)
-        
             print('Replying to ' + cid)
             comment.reply(REPLYMESSAGE.format(ILink))
             
