@@ -19,7 +19,6 @@ try:
 except ImportError:
     print("Error Importing Config.py")
     
-WAIT = 5
 
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
