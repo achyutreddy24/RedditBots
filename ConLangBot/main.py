@@ -47,7 +47,7 @@ def refresh_db(flairs):
 
 
 def find_in_submissions(search_string):
-	small.execute('SELECT * FROM threads')
+	cur.execute('SELECT * FROM threads')
     for row in cur:
         ID = row(0)
         post = r.get_info(thing_id=ID)
