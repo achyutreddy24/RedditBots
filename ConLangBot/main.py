@@ -1,7 +1,7 @@
 import praw # simple interface to the reddit API, also handles rate limiting of requests
 import time
 
-SUMMONTEXT = """+/u/ascii-text-bot"""
+SUMMONTEXT = """+/u/conlangbot"""
 
 #  Import Settings from Config.py
 try:
@@ -40,15 +40,29 @@ def refresh_db(flairs):
 	for post in posts:
 		# Anything that needs to happen every loop goes here.
 		pid = post.id
-        if 'Small Questions' in post.title
+        cur.execute('SELECT * FROM oldposts WHERE ID=?', [pid])
+		if cur.fetchone():
+            continue
+        if 'Small Questions' in post.title or 'WWSQ' in post.title
         small.execute('INSERT INTO posts VALUES(?, ?)', [pid, post.title])
         ssql.commit()
 
 
-def find_in_submissions(string, flairs):
-	
+def find_in_submissions(search_string, flairs):
+	small.execute('select * from threads')
+    for row in small:
+        ID = row(0)
+        post = r.get_info(thing_id=ID)
+        for comment in post.comments:
+            if search_string in comment.body.lower():
+                if comment.is_root:
+                    return comment.replies[0].body
+                else:
+                    return comment.body
 
 def scan():
+    refresh_db()
+
     comments = r.get_mentions(limit=MAXPOSTS)
     for comment in comments:
         
