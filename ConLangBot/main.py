@@ -102,9 +102,9 @@ def scan():
             print("Already replied to that comment")
 
 while True:
-    #try:
-    scan()
-    #except Exception as e:
-    #    print("ERR", e)
+    try:
+        scan()
+    except Exception as e:
+        print("ERR", e)
     print('Sleeping ' + str(WAIT))
     time.sleep(WAIT)
