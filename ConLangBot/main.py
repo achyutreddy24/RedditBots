@@ -13,7 +13,8 @@ try:
     USERAGENT = Config.USERAGENT
     MAXPOSTS = Config.MAXPOSTS
     REPLYMESSAGE = Config.REPLYMESSAGE
-    SUBREDDIT = Config.SUBREDDIT    
+    SUBREDDIT = Config.SUBREDDIT
+    WAIT = Config.WAIT  
 
     print("Loaded Config")
 except ImportError:
