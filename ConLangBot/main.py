@@ -23,15 +23,12 @@ WAIT = 5
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME, PASSWORD)
 
-sql = sqlite3.connect('posts.db')
+sql = sqlite3.connect('data.db')
 cur = sql.cursor()
 cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink TEXT, CLinkParent TEXT, ILink TEXT)')
-sql.commit()
 
-ssql = sqlite3.connect('small.db')
-small = ssql.cursor()
-small.execute('CREATE TABLE IF NOT EXISTS threads(PID TEXT, Title TEXT)')
-ssql.commit()
+cur.execute('CREATE TABLE IF NOT EXISTS threads(PID TEXT, Title TEXT)')
+sql.commit()
 
 print('Loaded SQL Database')
 
@@ -41,25 +38,25 @@ def refresh_db(flairs):
 	for post in posts:
 		# Anything that needs to happen every loop goes here.
 		pid = post.id
-        cur.execute('SELECT * FROM oldposts WHERE ID=?', [pid])
+        cur.execute('SELECT * FROM threads WHERE ID=?', [pid])
 		if cur.fetchone():
             continue
         if 'Small Questions' in post.title or 'WWSQ' in post.title
-        small.execute('INSERT INTO posts VALUES(?, ?)', [pid, post.title])
-        ssql.commit()
+        cur.execute('INSERT INTO threads VALUES(?, ?)', [pid, post.title])
+        sql.commit()
 
 
 def find_in_submissions(search_string):
-	small.execute('select * from threads')
-    for row in small:
+	small.execute('SELECT * FROM threads')
+    for row in cur:
         ID = row(0)
         post = r.get_info(thing_id=ID)
         for comment in post.comments:
             if search_string in comment.body.lower():
                 if comment.is_root:
-                    return comment.replies[0].body
+                    return comment.replies[0]
                 else:
-                    return comment.body
+                    return comment
 
 def scan():
     refresh_db()
@@ -80,7 +77,7 @@ def scan():
         if not cur.fetchone():
             print("Found a summon comment")
             
-            find_in_submission(word)
+            def_post = find_in_submission(word)
             
             print('Replying to ' + cid)
             comment.reply(REPLYMESSAGE.format(ILink))
