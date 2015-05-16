@@ -87,7 +87,7 @@ def scan():
             if def_post:
                 author = def_post.author
                 body = def_post.body
-                link = def_post.short_link
+                link = def_post.permalink
                 iden = def_post.id
                 print('Replying to ' + cid)
                 comment.reply(REPLYMESSAGE.format(text=body, author=author, link=link))
