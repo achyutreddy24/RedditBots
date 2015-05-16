@@ -85,7 +85,7 @@ def scan():
             
             def_post = find_in_submissions(word)
             if def_post:
-                author = def_post.author
+                author = "/u/" + def_post.author
                 body = def_post.body
                 link = def_post.permalink
                 iden = def_post.id
