@@ -17,7 +17,13 @@ REPLYMESSAGE ="""
 
 --{author}
 
-This post was gotten from a weekly small questions, this post was found here {link}
+This post was gotten from a weekly small questions, this post was found [here]({link})
+
+If this was not what you are looking for, here is some other threads were your word was found
+
+Link | Score
+---|---
+{table}
 """
 
 

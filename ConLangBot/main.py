@@ -50,6 +50,7 @@ def refresh_db():
 
 def find_in_submissions(search_string):
     cur.execute('SELECT * FROM threads')
+    list_of_comments = []
     for row in cur:
         print(row)
         ID = row[0]
@@ -57,9 +58,12 @@ def find_in_submissions(search_string):
         for comment in post.comments:
             if search_string in comment.body.lower():
                 if comment.is_root:
-                    return comment.replies[0]
+                    print(comment.score)
+                    list_of_comments.append([comment.replies[0], int(comment.score)])
                 else:
-                    return comment
+                    print(comment.score)
+                    list_of_comments.append([comment, int(comment.score)])
+    return list_of_comments
 
 def scan():
     refresh_db()
@@ -84,11 +88,13 @@ def scan():
             print("Found a summon comment")
             
             def_post = find_in_submissions(word)
+            def_post = sorted(def_post,key=lambda l:l[1], reverse=True)
             if def_post:
-                author = "/u/" + def_post.author
-                body = def_post.body
-                link = def_post.permalink
-                iden = def_post.id
+                author = "/u/" + str(def_post[0][0].author)
+                print(author)
+                body = str(def_post[0][0].body)
+                link = str(def_post[0][0].permalink)
+                iden = str(def_post[0][0].id)
 
                 lst = body.split("\n")
                 for x in range(len(lst)):
@@ -96,8 +102,15 @@ def scan():
 
                 body = "\n".join(lst)
 
+                table_lst = []
+                for i in range(len(def_post)):
+                    if i is 0:
+                        continue
+                    table_lst.append(" | ".join(['[Post]('+str(def_post[i][0].permalink)+')', str(def_post[i][1])]))
+                table = "\n".join(table_lst)
+
                 print('Replying to ' + cid)
-                comment.reply(REPLYMESSAGE.format(text=body, author=author, link=link))
+                comment.reply(REPLYMESSAGE.format(text=body, author=author, link=link, table=table))
             else:
                 print('Replying to ' + cid)
                 comment.reply("Sorry could not find that comment in any small questions thread.")
@@ -109,9 +122,9 @@ def scan():
             print("Already replied to that comment")
 
 while True:
-    try:
-        scan()
-    except Exception as e:
-        print("ERR", e)
+    #try:
+    scan()
+    #except Exception as e:
+    #    print("ERR", e)
     print('Sleeping ' + str(WAIT))
     time.sleep(WAIT)
