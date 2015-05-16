@@ -12,6 +12,8 @@ MAXPOSTS = 100
 WAIT = 30
 #This is how many seconds you will wait between cycles. The bot is completely inactive during this time.
 
+NOTFOUNDTEXT = "Sorry could not find that comment in any small questions thread."
+
 REPLYMESSAGE ="""
 {text}
 

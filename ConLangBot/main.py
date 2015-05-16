@@ -14,7 +14,8 @@ try:
     MAXPOSTS = Config.MAXPOSTS
     REPLYMESSAGE = Config.REPLYMESSAGE
     SUBREDDIT = Config.SUBREDDIT
-    WAIT = Config.WAIT  
+    WAIT = Config.WAIT
+    NOTFOUNDTEXT = config.NOTFOUNDTEXT
 
     print("Loaded Config")
 except ImportError:
@@ -113,7 +114,7 @@ def scan():
                 comment.reply(REPLYMESSAGE.format(text=body, author=author, link=link, table=table))
             else:
                 print('Replying to ' + cid)
-                comment.reply("Sorry could not find that comment in any small questions thread.")
+                comment.reply(NOTFOUNDTEXT)
                 iden = 'NOT FOUND'
 
             cur.execute('INSERT INTO posts VALUES(?, ?, ?)', [cid, word, iden])
