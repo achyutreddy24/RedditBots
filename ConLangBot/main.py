@@ -38,9 +38,7 @@ def refresh_db():
     subreddit = r.get_subreddit(SUBREDDIT)
     posts = subreddit.get_new(limit=MAXPOSTS)
     for post in posts:
-        # Anything that needs to happen every loop goes here.
         pid = post.id
-        print("Found "+pid+" "+ post.title)
         cur.execute('SELECT * FROM threads WHERE PID=?', [pid])
         if cur.fetchone():
             continue
@@ -123,9 +121,9 @@ def scan():
             print("Already replied to that comment")
 
 while True:
-    #try:
-    scan()
-    #except Exception as e:
-    #    print("ERR", e)
+    try:
+        scan()
+    except Exception as e:
+        print("ERR", e)
     print('Sleeping ' + str(WAIT))
     time.sleep(WAIT)
