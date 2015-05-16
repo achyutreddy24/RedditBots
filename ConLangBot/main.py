@@ -89,6 +89,13 @@ def scan():
                 body = def_post.body
                 link = def_post.permalink
                 iden = def_post.id
+
+                lst = body.split("\n")
+                for x in range(len(lst)):
+                    lst[x] = "> " + lst[x]
+
+                body = "\n".join(lst)
+
                 print('Replying to ' + cid)
                 comment.reply(REPLYMESSAGE.format(text=body, author=author, link=link))
             else:
