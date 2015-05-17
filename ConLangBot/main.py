@@ -3,7 +3,7 @@ import time
 import sqlite3
 import re
 
-SUMMONTEXT = """\+\/u\/fusiongaming\s*\"([\s\S]+)\""""
+SUMMONTEXT = """\+\/u\/connielangston\s*what\s*is\s*\"([\s\S]+)\""""
 
 #  Import Settings from Config.py
 try:
