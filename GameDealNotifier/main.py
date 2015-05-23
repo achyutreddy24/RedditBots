@@ -35,7 +35,7 @@ ccur = sql.cursor()
 ccur.execute('CREATE TABLE IF NOT EXISTS comments(CID TEXT)')
 csql.commit()
 
-def GetMentions():
+def update_database():
     comments = r.get_mentions(limit=MAXPOSTS)
     for comment in comments:
         
@@ -50,7 +50,20 @@ def GetMentions():
                 print("Already replied to that comment")
                 continue
 
-        matched = re.match(url_pattern, cbody)
+        add_match = re.match(add_regex, cbody)
+        rem_match = re.match(rem_regex, cbody)
+
+        if add_match:
+            cur.execute('CREATE TABLE IF NOT EXISTS {user}(GAME TEXT)'.format(user=cauthor))
+            add_list = add_match.group(1).split(', ')
+            for game in add_list:
+                cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
+        if rem_match:
+            cur.execute('CREATE TABLE IF NOT EXISTS {user}(GAME TEXT)'.format(user=cauthor))
+            rem_list = rem_match.group(1).split(', ')
+            for game in rem_list:
+                cur.execute('DELETE FROM comments WHERE GAME=?', [game])
+
 
         
 
