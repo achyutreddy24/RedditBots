@@ -33,7 +33,7 @@ sql.commit()
 csql = sqlite3.connect('history.db')
 ccur = csql.cursor()
 ccur.execute('CREATE TABLE IF NOT EXISTS comments(CID TEXT)')
-ccur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT)')
+ccur.execute('CREATE TABLE IF NOT EXISTS posts(PID TEXT)')
 csql.commit()
 
 roman_numerals = (('M',1000),('CM',900),('D',500),('CD',400),('C',100),('XC',90),('L',50),('XL',40),('X',10),('IX',9),('V',5),('IV',4),('I',1))
@@ -72,8 +72,8 @@ def update_database():
             print("Already replied to that comment")
             continue
 
-        add_match = re.match(add_regex, cbody)
-        rem_match = re.match(rem_regex, cbody)
+        add_match = re.search(add_regex, cbody)
+        rem_match = re.search(rem_regex, cbody)
 
         if add_match:
             print('Found add keyword')
@@ -104,6 +104,8 @@ def update_database():
         else:
             print('No keywords found, skipping')
 
+        ccur.execute('INSERT INTO comments VALUES(?)', [cid])
+
         sql.commit()
         csql.commit()
 
@@ -112,6 +114,15 @@ def iter_users():
     subreddit = r.get_subreddit("GameDeals")
     posts = list(subreddit.get_new(limit=50))
 
+    for i in range(len(posts)):
+        ccur.execute('SELECT * FROM posts WHERE PID=?', [posts[i].id])
+        if cur.fetchone():
+            del posts[i]
+
+    if posts is []:
+        print('No new posts, skipping')
+        return 0
+
     cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
     for user in cur.fetchall():
         print('Iterating over users')
@@ -119,7 +130,7 @@ def iter_users():
 
         user_list = []
         
-        cur.execute('SELECT game FROM {user}'.format(user))
+        cur.execute('SELECT game FROM {user}'.format(user=user))
         if not cur.fetchone:
             #User with no games gets deleted
             print('Deleted '+user)
@@ -148,6 +159,9 @@ def iter_users():
 
         sql.commit()
         csql.commit()
+
+    for post in posts:
+        ccur.execute('INSERT INTO posts VALUES(?)', [post.id])
 
             
 def main_loop():
