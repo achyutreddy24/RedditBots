@@ -86,6 +86,17 @@ def update_database():
             for game in rem_list:
                 cur.execute('DELETE FROM comments WHERE game=?', [game])
 
+        reply = ""
+
+        if add_match:
+            reply = reply + "The following games were added: {}\n\n".format(add_match.group(1))
+        if rem_match:
+            reply = reply + "The following games were removed: {}\n\n".format(rem_match.group(1))
+
+        if add_match or rem_match:
+            #reply = reply + ""
+            comment.reply(reply)
+
 def iter_users:
     subreddit = r.get_subreddit("Fusion_Gaming")
     posts = list(subreddit.get_new(limit=MAXPOSTS))
@@ -113,8 +124,13 @@ def iter_users:
                 if fgame in ftitle:
                     user_list.append([game, title, post.permalink])
 
-        message = reddit_table_format(user_list)
+        if user_list is False:
+            continue
 
+        message = reddit_table_format(user_list)
+        message = "New notifications for games that you are tracking\n\n"+message
+
+        r.send_message(user, "Game Notification", message)
 
             
 
