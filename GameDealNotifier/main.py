@@ -54,26 +54,23 @@ def update_database():
         rem_match = re.match(rem_regex, cbody)
 
         if add_match:
-            cur.execute('CREATE TABLE IF NOT EXISTS {user}(GAME TEXT)'.format(user=cauthor))
+            cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             add_list = add_match.group(1).split(', ')
             for game in add_list:
                 cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
         if rem_match:
-            cur.execute('CREATE TABLE IF NOT EXISTS {user}(GAME TEXT)'.format(user=cauthor))
+            cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             rem_list = rem_match.group(1).split(', ')
             for game in rem_list:
-                cur.execute('DELETE FROM comments WHERE GAME=?', [game])
+                cur.execute('DELETE FROM comments WHERE game=?', [game])
 
-
+def iter_users:
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
+    for user in cur.fetchall():
+        user = user[0]
         
-
-
-# while True:
-#     try:
-#         mainLoop()
-#     except Exception as e:
-#         print("ERROR:", e)
-#     print('Sleeping ' + str(WAIT) + ' seconds.\n')
-#     time.sleep(WAIT)
-
-mainLoop()
+        cur.execute('SELECT game FROM {user}'.format(user))
+        if not cur.fetchone:
+            #User with no games gets deleted
+            cur.execute('DELETE FROM sqlite_master WHERE name=?', [user])
+            
