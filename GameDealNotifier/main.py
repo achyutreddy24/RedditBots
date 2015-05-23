@@ -31,7 +31,7 @@ cur = sql.cursor()
 sql.commit()
 
 csql = sqlite3.connect('history.db')
-ccur = sql.cursor()
+ccur = csql.cursor()
 ccur.execute('CREATE TABLE IF NOT EXISTS comments(CID TEXT)')
 ccur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT)')
 csql.commit()
@@ -58,7 +58,7 @@ def reddit_table_format(user_list):
     return '\n'.join(message_list)
 
 def update_database():
-    comments = r.get_mentions(limit=MAXPOSTS)
+    comments = r.get_mentions(limit=50)
     for comment in comments:
         
         cbody = comment.body
@@ -67,7 +67,7 @@ def update_database():
 
         ccur.execute('SELECT * FROM comments WHERE CID=?', [cid])
         if not ccur.fetchone():
-            print("Found a summon comment")
+            print(cbody)
         else:
             print("Already replied to that comment")
             continue
@@ -76,15 +76,19 @@ def update_database():
         rem_match = re.match(rem_regex, cbody)
 
         if add_match:
+            print('Found add keyword')
             cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             add_list = add_match.group(1).split(', ')
             for game in add_list:
                 cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
+            print('Added {} into database for {}'.format(add_list, cauthor))
         if rem_match:
+            print('Found remove keyword')
             cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             rem_list = rem_match.group(1).split(', ')
             for game in rem_list:
                 cur.execute('DELETE FROM comments WHERE game=?', [game])
+            print('Removed {} from database for {}'.format(rem_list, cauthor))
 
         reply = ""
 
@@ -96,13 +100,21 @@ def update_database():
         if add_match or rem_match:
             #reply = reply + ""
             comment.reply(reply)
+            print('Replied to comment')
+        else:
+            print('No keywords found, skipping')
+
+        sql.commit()
+        csql.commit()
 
 def iter_users():
+    print('Getting newest posts')
     subreddit = r.get_subreddit("GameDeals")
-    posts = list(subreddit.get_new(limit=MAXPOSTS))
+    posts = list(subreddit.get_new(limit=50))
 
     cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
     for user in cur.fetchall():
+        print('Iterating over users')
         user = user[0]
 
         user_list = []
@@ -110,6 +122,7 @@ def iter_users():
         cur.execute('SELECT game FROM {user}'.format(user))
         if not cur.fetchone:
             #User with no games gets deleted
+            print('Deleted '+user)
             cur.execute('DELETE FROM sqlite_master WHERE name=?', [user])
             continue
 
@@ -131,11 +144,20 @@ def iter_users():
         message = "New notifications for games that you are tracking\n\n"+message
 
         r.send_message(user, "Game Notification", message)
+        print('Sent PM with notifications')
+
+        sql.commit()
+        csql.commit()
 
             
+def main_loop():
+    while(True):
+        update_database()
+        iter_users()
+        print('sleeping')
+        time.sleep(3600)
 
-        
-
+main_loop()
 
 
 
