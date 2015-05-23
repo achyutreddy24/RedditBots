@@ -66,11 +66,11 @@ def update_database():
         cauthor = comment.author
 
         ccur.execute('SELECT * FROM comments WHERE CID=?', [cid])
-            if not ccur.fetchone():
-                print("Found a summon comment")
-            else:
-                print("Already replied to that comment")
-                continue
+        if not ccur.fetchone():
+            print("Found a summon comment")
+        else:
+            print("Already replied to that comment")
+            continue
 
         add_match = re.match(add_regex, cbody)
         rem_match = re.match(rem_regex, cbody)
@@ -97,8 +97,8 @@ def update_database():
             #reply = reply + ""
             comment.reply(reply)
 
-def iter_users:
-    subreddit = r.get_subreddit("Fusion_Gaming")
+def iter_users():
+    subreddit = r.get_subreddit("GameDeals")
     posts = list(subreddit.get_new(limit=MAXPOSTS))
 
     cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
