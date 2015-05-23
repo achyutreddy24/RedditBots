@@ -30,10 +30,32 @@ sql = sqlite3.connect('users.db')
 cur = sql.cursor()
 sql.commit()
 
-csql = sqlite3.connect('comments.db')
+csql = sqlite3.connect('history.db')
 ccur = sql.cursor()
 ccur.execute('CREATE TABLE IF NOT EXISTS comments(CID TEXT)')
+ccur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT)')
 csql.commit()
+
+roman_numerals = (('M',1000),('CM',900),('D',500),('CD',400),('C',100),('XC',90),('L',50),('XL',40),('X',10),('IX',9),('V',5),('IV',4),('I',1))
+
+def convert_to_roman(n):
+    result = ""
+    for numeral, integer in roman_numerals:
+        while n >= integer:
+            result += numeral
+            n -= integer
+    return result
+
+def simple_format(s):
+    s = s.lower()
+    s = s.replace(" ", "")
+    return s
+
+def reddit_table_format(user_list):
+    message_list = ['Game | Post', '--- | ---']
+    for row in user_list:
+        message_list.append('{game} | ]{post}]({link})'.format(game=user_list[0], post=user_list[1], link=user_list[2]))
+    return '\n'.join(message_list)
 
 def update_database():
     comments = r.get_mentions(limit=MAXPOSTS)
@@ -65,12 +87,41 @@ def update_database():
                 cur.execute('DELETE FROM comments WHERE game=?', [game])
 
 def iter_users:
+    subreddit = r.get_subreddit("Fusion_Gaming")
+    posts = list(subreddit.get_new(limit=MAXPOSTS))
+
     cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
     for user in cur.fetchall():
         user = user[0]
+
+        user_list = []
         
         cur.execute('SELECT game FROM {user}'.format(user))
         if not cur.fetchone:
             #User with no games gets deleted
             cur.execute('DELETE FROM sqlite_master WHERE name=?', [user])
+            continue
+
+        for row in c.execute('SELECT * FROM {user}'.format(user=user)):
+            game = row[0]
+            fgame = simple_format(game)
+
+            for post in posts:
+                title = post.title
+                ftitle = simple_format(ftitle)
+
+                if fgame in ftitle:
+                    user_list.append([game, title, post.permalink])
+
+        message = reddit_table_format(user_list)
+
+
             
+
+        
+
+
+
+
+
+
