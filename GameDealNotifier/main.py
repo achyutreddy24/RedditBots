@@ -54,7 +54,7 @@ def simple_format(s):
 def reddit_table_format(user_list):
     message_list = ['Game | Post', '--- | ---']
     for row in user_list:
-        message_list.append('{game} | ]{post}]({link})'.format(game=user_list[0], post=user_list[1], link=user_list[2]))
+        message_list.append('{game} | [{post}]({link})'.format(game=row[0], post=row[1], link=row[2]))
     return '\n'.join(message_list)
 
 def update_database():
@@ -80,6 +80,9 @@ def update_database():
             cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             add_list = add_match.group(1).split(', ')
             for game in add_list:
+                cur.execute('SELECT * FROM {user} where game=?'.format(user=user), [game])
+                if cur.fetchone():
+                    continue
                 cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
             print('Added {} into database for {}'.format(add_list, cauthor))
         if rem_match:
@@ -87,6 +90,9 @@ def update_database():
             cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             rem_list = rem_match.group(1).split(', ')
             for game in rem_list:
+                cur.execute('SELECT * FROM {user} where game=?'.format(user=user), [game])
+                if cur.fetchone():
+                    continue
                 cur.execute('DELETE FROM comments WHERE game=?', [game])
             print('Removed {} from database for {}'.format(rem_list, cauthor))
 
@@ -99,7 +105,7 @@ def update_database():
 
         if add_match or rem_match:
             #reply = reply + ""
-            comment.reply(reply)
+            #comment.reply(reply)
             print('Replied to comment')
         else:
             print('No keywords found, skipping')
@@ -119,6 +125,8 @@ def iter_users():
         if cur.fetchone():
             del posts[i]
 
+    csql.commit()
+
     if posts is []:
         print('No new posts, skipping')
         return 0
@@ -137,19 +145,25 @@ def iter_users():
             cur.execute('DELETE FROM sqlite_master WHERE name=?', [user])
             continue
 
-        for row in c.execute('SELECT * FROM {user}'.format(user=user)):
+        for row in cur.execute('SELECT game FROM {user}'.format(user=user)):
             game = row[0]
+            print(game)
             fgame = simple_format(game)
+            print('ITERSJKDGHSLJKFGHLSDKJFHG__1')
 
             for post in posts:
+                print('ITERSJKDGHSLJKFGHLSDKJFHG__2')
                 title = post.title
-                ftitle = simple_format(ftitle)
+                ftitle = simple_format(title)
 
                 if fgame in ftitle:
+                    print(game, title)
                     user_list.append([game, title, post.permalink])
 
         if user_list is False:
             continue
+
+        print(user_list)
 
         message = reddit_table_format(user_list)
         message = "New notifications for games that you are tracking\n\n"+message
