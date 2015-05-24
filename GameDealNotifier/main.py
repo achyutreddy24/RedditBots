@@ -75,35 +75,45 @@ def update_database():
         add_match = re.search(add_regex, cbody)
         rem_match = re.search(rem_regex, cbody)
 
+        cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
+        
+        reply = ""
+
+        if '!NotifyAll' in cbody:
+            print('Found notify keyword')
+            game_list = []
+            for row in cur.execute('SELECT game FROM {user}'.format(user=cauthor)):
+                game_list.append(row[0])
+            reply = reply + 'Here are all the games you are being notified of\n\n'
+            reply = reply + '\n\n'.join(game_list)
+
+        if '!StopNotify' in cbody:
+            print('Found stop keyword')
+            cur.execute('DROP TABLE {user}'.format(user=cauthor))
+            reply = reply + '\n\nNo longer notifying you of game deals\n\n'
+
         if add_match:
             print('Found add keyword')
-            cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             add_list = add_match.group(1).split(', ')
             for game in add_list:
-                cur.execute('SELECT * FROM {user} where game=?'.format(user=user), [game])
+                cur.execute('SELECT * FROM {user} where game=?'.format(user=cauthor), [game])
                 if cur.fetchone():
                     continue
                 cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
             print('Added {} into database for {}'.format(add_list, cauthor))
         if rem_match:
             print('Found remove keyword')
-            cur.execute('CREATE TABLE IF NOT EXISTS {user}(game TEXT)'.format(user=cauthor))
             rem_list = rem_match.group(1).split(', ')
             for game in rem_list:
-                cur.execute('SELECT * FROM {user} where game=?'.format(user=user), [game])
-                if cur.fetchone():
-                    continue
-                cur.execute('DELETE FROM comments WHERE game=?', [game])
+                cur.execute('DELETE FROM {user} WHERE game=?'.format(user=cauthor), [game])
             print('Removed {} from database for {}'.format(rem_list, cauthor))
-
-        reply = ""
 
         if add_match:
             reply = reply + "The following games were added: {}\n\n".format(add_match.group(1))
         if rem_match:
             reply = reply + "The following games were removed: {}\n\n".format(rem_match.group(1))
 
-        if add_match or rem_match:
+        if add_match or rem_match or '!NotifyAll' in cbody or '!StopNotify in cbody':
             reply = reply + "\n\n***\n^^I'm ^^a ^^bot, ^^this ^^action ^^was ^^performed ^^automatically.\n***\n"
             comment.reply(reply)
             print('Replied to comment')
@@ -147,7 +157,7 @@ def iter_users():
         if not cur.fetchone:
             #User with no games gets deleted
             print('Deleted '+user)
-            cur.execute('DELETE FROM sqlite_master WHERE name=?', [user])
+            cur.execute('DROP TABLE {user}'.format(user=user))
             continue
 
         for row in cur.execute('SELECT game FROM {user}'.format(user=user)):
@@ -184,7 +194,7 @@ def main_loop():
         update_database()
         iter_users()
         print('sleeping')
-        time.sleep(3600)
+        time.sleep(30)
 
 main_loop()
 
