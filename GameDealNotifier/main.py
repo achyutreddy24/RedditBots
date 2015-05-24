@@ -104,8 +104,8 @@ def update_database():
             reply = reply + "The following games were removed: {}\n\n".format(rem_match.group(1))
 
         if add_match or rem_match:
-            #reply = reply + ""
-            #comment.reply(reply)
+            reply = reply + "\n\n***\n^^I'm ^^a ^^bot, ^^this ^^action ^^was ^^performed ^^automatically.\n***\n"
+            comment.reply(reply)
             print('Replied to comment')
         else:
             print('No keywords found, skipping')
@@ -120,16 +120,19 @@ def iter_users():
     subreddit = r.get_subreddit("GameDeals")
     posts = list(subreddit.get_new(limit=50))
 
-    for i in range(len(posts)):
-        ccur.execute('SELECT * FROM posts WHERE PID=?', [posts[i].id])
+    for post in posts[:]:
+        ccur.execute('SELECT PID FROM posts WHERE PID=?', [post.id])
         if ccur.fetchone():
-            del posts[i]
+            posts.remove(post)
         else:
             ccur.execute('INSERT INTO posts VALUES(?)', [post.id])
+            csql.commit()
 
     csql.commit()
+    
+    print('Len of list is '+str(len(posts)))
 
-    if posts is []:
+    if not posts:
         print('No new posts, skipping')
         return 0
 
@@ -151,10 +154,8 @@ def iter_users():
             game = row[0]
             print(game)
             fgame = simple_format(game)
-            print('ITERSJKDGHSLJKFGHLSDKJFHG__1')
 
             for post in posts:
-                print('ITERSJKDGHSLJKFGHLSDKJFHG__2')
                 title = post.title
                 ftitle = simple_format(title)
 
