@@ -122,8 +122,10 @@ def iter_users():
 
     for i in range(len(posts)):
         ccur.execute('SELECT * FROM posts WHERE PID=?', [posts[i].id])
-        if cur.fetchone():
+        if ccur.fetchone():
             del posts[i]
+        else:
+            ccur.execute('INSERT INTO posts VALUES(?)', [post.id])
 
     csql.commit()
 
@@ -174,8 +176,6 @@ def iter_users():
         sql.commit()
         csql.commit()
 
-    for post in posts:
-        ccur.execute('INSERT INTO posts VALUES(?)', [post.id])
 
             
 def main_loop():
