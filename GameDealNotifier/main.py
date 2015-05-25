@@ -179,7 +179,7 @@ def iter_users():
                     print(game, title)
                     user_list.append([game, title, post.permalink])
 
-        if user_list is False:
+        if not user_list:
             continue
 
         print(user_list)
