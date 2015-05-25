@@ -101,17 +101,17 @@ def update_database():
             print('Found add keyword')
             add_list = add_match.group(1).split(', ')
             for game in add_list:
-                cur.execute('SELECT * FROM {user} where game=?'.format(user=cauthor), [game])
+                cur.execute('SELECT * FROM {user} where game=?'.format(user=cauthor), [game.lower()])
                 if cur.fetchone():
                     continue
-                cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
+                cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game].lower())
             print('Added {} into database for {}'.format(add_list, cauthor))
         if rem_match:
             make_reply = True
             print('Found remove keyword')
             rem_list = rem_match.group(1).split(', ')
             for game in rem_list:
-                cur.execute('DELETE FROM {user} WHERE game=?'.format(user=cauthor), [game])
+                cur.execute('DELETE FROM {user} WHERE game=?'.format(user=cauthor), [game.lower()])
             print('Removed {} from database for {}'.format(rem_list, cauthor))
 
         if add_match:
