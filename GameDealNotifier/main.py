@@ -79,7 +79,10 @@ def update_database():
         
         reply = ""
 
+        make_reply = False
+
         if '!NotifyAll' in cbody:
+            make_reply = True
             print('Found notify keyword')
             game_list = []
             for row in cur.execute('SELECT game FROM {user}'.format(user=cauthor)):
@@ -88,11 +91,13 @@ def update_database():
             reply = reply + '\n\n'.join(game_list)
 
         if '!StopNotify' in cbody:
+            make_reply = True
             print('Found stop keyword')
             cur.execute('DROP TABLE {user}'.format(user=cauthor))
             reply = reply + '\n\nNo longer notifying you of game deals\n\n'
 
         if add_match:
+            make_reply = True
             print('Found add keyword')
             add_list = add_match.group(1).split(', ')
             for game in add_list:
@@ -102,6 +107,7 @@ def update_database():
                 cur.execute('INSERT INTO {user} VALUES(?)'.format(user=cauthor), [game])
             print('Added {} into database for {}'.format(add_list, cauthor))
         if rem_match:
+            make_reply = True
             print('Found remove keyword')
             rem_list = rem_match.group(1).split(', ')
             for game in rem_list:
@@ -113,7 +119,7 @@ def update_database():
         if rem_match:
             reply = reply + "The following games were removed: {}\n\n".format(rem_match.group(1))
 
-        if add_match or rem_match or '!NotifyAll' in cbody or '!StopNotify in cbody':
+        if make_reply:
             reply = reply + "\n\n***\n^^I'm ^^a ^^bot, ^^this ^^action ^^was ^^performed ^^automatically.\n***\n"
             comment.reply(reply)
             print('Replied to comment')
@@ -191,10 +197,13 @@ def iter_users():
             
 def main_loop():
     while(True):
-        update_database()
-        iter_users()
-        print('sleeping')
-        time.sleep(30)
+        try:
+            update_database()
+            iter_users()
+            print('sleeping')
+            time.sleep(30)
+        except:
+            time.sleep(30)
 
 main_loop()
 
