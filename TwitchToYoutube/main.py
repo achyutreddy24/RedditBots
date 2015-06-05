@@ -6,6 +6,7 @@ import time
 import re
 import sqlite3
 import requests
+import subprocess
 
 import twitchdownloader as td
 import FormatVideoFile as fvd
@@ -47,7 +48,7 @@ except ImportError:
 # Regex pattern to get the correct twitch links
 # SAMPLE LINK
 # http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
-url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/b\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
+url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/([v|b])\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
 time_in_title = re.compile("""{{(\d+):(\d+)}}""")
 extract_subreddit = re.compile("""\/r\/(.+?)\/""")
 
@@ -135,12 +136,13 @@ def GetMentions():
                 print("Already replied to that comment")
                 continue
 
-            rID = matched.group(1)
-            rHRS = matched.group(2)
-            rMIN = matched.group(3)
-            rSEC = matched.group(4)
+            Type = matched.group(1)
+            rID  = matched.group(2)
+            rHRS = matched.group(3)
+            rMIN = matched.group(4)
+            rSEC = matched.group(5)
             
-            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":parent, "TITLE":Clink, "URL":matched.group(0), "REPLYTO":comment}
+            dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":parent, "TITLE":Clink, "URL":matched.group(0), "REPLYTO":comment, "TYPE":Type}
             return dict
                 
         
@@ -185,10 +187,13 @@ def GetPosts():
         else:
             print("Already replied to that")
 
-def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds):
+def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type):
     """Figures out which chunk to download and where the segment is in that chunk"""
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
-    td.download_broadcast(ID, chunk_info[0])
+    if Type is 'b':
+        td.download_broadcast(ID, chunk_info[0])
+    elif Type is 'v':
+        subprocess.call('livestreamer "{url}" best -o {fileName}'.format(url=url, fileName=ID+'.flv_edited.mp4'))
     return chunk_info[1]
     
 def CutVideo(fileName, startTime, endTime):
@@ -242,14 +247,15 @@ def mainLoop():
         LINK = ""
         StartingTime = None
         try:
-            StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime)
+            StartingTime = DownloadTwitchANDReturnStartingTime(ID, STime, url_info["TYPE"], URL)
         except Exception as e:
             print("Twitch Error is: "+str(e))
             LINK = "Twitch Error " + str(e)
 
         if StartingTime:
             try:
-                CutVideo(ID+".flv", StartingTime, StartingTime+video_length)
+                if url_info["TYPE"] is 'b':
+                    CutVideo(ID+".flv", StartingTime, StartingTime+video_length)
 
                 # Need to email this file to the mobile upload link
                 # Old command replaced with google api now
