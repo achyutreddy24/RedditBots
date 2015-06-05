@@ -190,11 +190,12 @@ def GetPosts():
 
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type, url):
     """Figures out which chunk to download and where the segment is in that chunk"""
-    chunk_info = td.getChunkNum(ID, TimeInSeconds)
     if Type is 'b':
+        chunk_info = td.getChunkNum(ID, TimeInSeconds)
         td.download_broadcast(ID, chunk_info[0])
     elif Type is 'v':
         subprocess.call('livestreamer "{url}" best -o {fileName}'.format(url=url, fileName=ID+'.flv_edited.mp4'))
+        chunk_info[1] == 0
     return chunk_info[1]
     
 def CutVideo(fileName, startTime, endTime):
