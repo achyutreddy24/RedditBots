@@ -190,20 +190,24 @@ def GetPosts():
 
 def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type, url):
     """Figures out which chunk to download and where the segment is in that chunk"""
-    chunk_info = [0, 0]
     if Type is 'b':
         chunk_info = td.getChunkNum(ID, TimeInSeconds)
         td.download_broadcast(ID, chunk_info[0])
     elif Type is 'v':
-        subprocess.call('livestreamer "{url}" best -o {fileName} &'.format(url=url, fileName=ID+'.flv_edited.mp4'), shell=True)
-        time.sleep(15)
+        print("Waiting for download")
+        os.system('livestreamer "{url}" high -o {fileName} &'.format(url=url, fileName=ID+'.flv'))
+        time.sleep(180)
         subprocess.call('killall livestreamer', shell=True)
-        chunk_info[1] == 0
+        return True
     return chunk_info[1]
     
 def CutVideo(fileName, startTime, endTime):
     """Cuts the video files"""
     fvd.GetVideoSection(fileName, startTime, endTime)
+
+def CompressVideo(fileName):
+    """Cuts the video files"""
+    fvd.CompressVideo(fileName)
   
 def LoopVideoCheck(titleOfVideo):
     UploadStatus = yl.CheckIfUploaded(titleOfVideo)
@@ -261,6 +265,8 @@ def mainLoop():
             try:
                 if url_info["TYPE"] is 'b':
                     CutVideo(ID+".flv", StartingTime, StartingTime+video_length)
+                elif url_info["TYPE"] is 'v':
+                    CompressVideo(ID+".flv")
 
                 # Need to email this file to the mobile upload link
                 # Old command replaced with google api now

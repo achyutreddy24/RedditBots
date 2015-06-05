@@ -14,7 +14,7 @@ def GetVideoSection(fileName, startTime, endTime):
     final_clip = me.CompositeVideoClip([clip])
 
     # write the result to a file in any format
-    final_clip.to_videofile(fileName+"_edited.mp4",fps=30)
+    final_clip.write_videofile(fileName+"_edited.mp4",fps=30)
     
     #statinfo = os.stat(fileName+'_edited.mp4')
     
@@ -26,3 +26,14 @@ def GetVideoSection(fileName, startTime, endTime):
     #    
     #    final_clip.to_videofile(fileName+"_edited.mp4",fps=newFPS)
     #    statinfo = os.stat(fileName+'_edited.mp4')
+
+def CompressVideo(fileName):
+    fvd = importlib.reload(me) #Moviepy crashes when converting a second video, workaround for now
+    # Load file and select the subclip
+    clip = me.VideoFileClip(fileName).resize(width=1920, height=1080)
+    
+    final_clip = me.CompositeVideoClip([clip])
+
+    # write the result to a file in any format
+    final_clip.write_videofile(fileName+"_edited.mp4", fps=30)
+    
