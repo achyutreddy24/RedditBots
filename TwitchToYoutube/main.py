@@ -194,7 +194,9 @@ def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type, url):
         chunk_info = td.getChunkNum(ID, TimeInSeconds)
         td.download_broadcast(ID, chunk_info[0])
     elif Type is 'v':
-        subprocess.call('livestreamer "{url}" best -o {fileName}'.format(url=url, fileName=ID+'.flv_edited.mp4'), shell=True)
+        subprocess.call('livestreamer "{url}" best -o {fileName} &'.format(url=url, fileName=ID+'.flv_edited.mp4'), shell=True)
+        time.sleep(120)
+        subprocess.call('killall livestreamer', shell=True)
         chunk_info[1] == 0
     return chunk_info[1]
     
