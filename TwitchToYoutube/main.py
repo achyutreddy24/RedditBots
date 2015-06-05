@@ -188,7 +188,7 @@ def GetPosts():
         else:
             print("Already replied to that")
 
-def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type):
+def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type, url):
     """Figures out which chunk to download and where the segment is in that chunk"""
     chunk_info = td.getChunkNum(ID, TimeInSeconds)
     if Type is 'b':
