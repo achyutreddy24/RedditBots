@@ -195,7 +195,7 @@ def DownloadTwitchANDReturnStartingTime(ID, TimeInSeconds, Type, url):
         td.download_broadcast(ID, chunk_info[0])
     elif Type is 'v':
         print("Waiting for download")
-        os.system('livestreamer "{url}" high -o {fileName} &'.format(url=url, fileName=ID+'.flv'))
+        os.system('livestreamer "{url}" high -o {fileName} &'.format(url=url, fileName=ID+'.flv_edited.mp4'))
         time.sleep(180)
         subprocess.call('killall livestreamer', shell=True)
         return True
@@ -265,8 +265,8 @@ def mainLoop():
             try:
                 if url_info["TYPE"] is 'b':
                     CutVideo(ID+".flv", StartingTime, StartingTime+video_length)
-                elif url_info["TYPE"] is 'v':
-                    CompressVideo(ID+".flv")
+                #elif url_info["TYPE"] is 'v':
+                    #CompressVideo(ID+".flv")
 
                 # Need to email this file to the mobile upload link
                 # Old command replaced with google api now
