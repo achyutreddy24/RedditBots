@@ -174,12 +174,13 @@ def GetPosts():
                         print('Sub is Excluded')
                         cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [pid, post.title, post.url, 'EXCLUDEDSUB'])
                         continue
-                    rID = matched.group(1)
-                    rHRS = matched.group(2)
-                    rMIN = matched.group(3)
-                    rSEC = matched.group(4)
+                    Type = matched.group(1)
+                    rID  = matched.group(2)
+                    rHRS = matched.group(3)
+                    rMIN = matched.group(4)
+                    rSEC = matched.group(5)
                     
-                    dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":post, "TITLE":post.title, "URL":post.url}
+                    dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":post, "TITLE":post.title, "URL":post.url, "Type":Type}
                     print("Title is "+post.title)
                     return dict
             else:
