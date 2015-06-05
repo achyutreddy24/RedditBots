@@ -180,7 +180,7 @@ def GetPosts():
                     rMIN = matched.group(4)
                     rSEC = matched.group(5)
                     
-                    dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":post, "TITLE":post.title, "URL":post.url, "Type":Type}
+                    dict = {"ID":rID, "HRS":rHRS, "MIN": rMIN, "SEC":rSEC, "POST":post, "TITLE":post.title, "URL":post.url, "TYPE":Type}
                     print("Title is "+post.title)
                     return dict
             else:
