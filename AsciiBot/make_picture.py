@@ -9,7 +9,7 @@ def make_jpg(filename, output):
     filename_text = filename_noext + '.txt'
     filename_ghost = filename_noext + '_render.ps'
     filea = open(filename_text, 'r', encoding='utf-8')
-    lines = filea.read().decode('utf-8')
+    lines = filea.read()
     lines_split = lines.split('\n')
     lines_height = len(lines_split)
     lines_width = len(lines_split[0])
