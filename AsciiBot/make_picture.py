@@ -8,8 +8,8 @@ def make_jpg(filename, output):
     filename_noext = filename
     filename_text = filename_noext + '.txt'
     filename_ghost = filename_noext + '_render.ps'
-    filea = open(filename_text, 'r', encoding='utf-32')
-    lines = filea.read().decode('utf-32')
+    filea = open(filename_text, 'r', encoding='utf-8')
+    lines = filea.read()#.decode('utf-8')
     lines_split = lines.split('\n')
     lines_height = len(lines_split)
     lines_width = len(lines_split[0])
@@ -27,3 +27,5 @@ def make_jpg(filename, output):
     print('Writing JPG')
     #Uses ImageMagick convert (should be installed on most linux systems and can be downloaded for windows(uses ghostscript))
     subprocess.call('convert {psfname} {pngfname}'.format(psfname=filename_ghost, pngfname=output+'.jpg'), shell=True)
+
+make_jpg('test','test')
