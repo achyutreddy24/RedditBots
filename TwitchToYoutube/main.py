@@ -48,7 +48,8 @@ except ImportError:
 # Regex pattern to get the correct twitch links
 # SAMPLE LINK
 # http://www.twitch.tv/pashabiceps/b/578370509?t=55m45s
-url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/([v|b])\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
+url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/([b])\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
+#url_pattern = re.compile("""http://www\.twitch\.tv\/.+\/([v|b])\/(\d+)\?t=(?:(\d*)h)?(?:(\d*)m)?(?:(\d*)s)?""")
 time_in_title = re.compile("""{{(\d+):(\d+)}}""")
 extract_subreddit = re.compile("""\/r\/(.+?)\/""")
 
