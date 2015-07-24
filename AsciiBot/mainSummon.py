@@ -4,8 +4,6 @@ import sqlite3
 import html
 from imgurpython import ImgurClient
 
-import make_picture as mp
-
 SUMMONTEXT = """+/u/ascii-text-bot"""
 
 #  Import Settings from Config.py
@@ -75,15 +73,7 @@ def scan():
                 pbody = html.unescape(parent.selftext)
                 ClinkParent = parent.permalink
             
-            pbody = pbody.replace("\xc2\xa0", " ")
             
-            print("Writing txt file")
-            f = open('CurrentAscii.txt', 'w', encoding='utf-32')
-            f.write(pbody)
-            f.close()
-            print('Wrote text file')
-            
-            mp.make_jpg('CurrentAscii', 'CurrentJPG')
             ILink = upload_imgur('CurrentJPG.jpg')['link']
             print(ILink)
         
