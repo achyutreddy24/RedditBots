@@ -3,6 +3,7 @@ import time
 import sqlite3
 import html
 from imgurpython import ImgurClient
+import OAuth2Util
 import subprocess
 
 SUMMONTEXT = """+/u/ascii-text-bot"""
@@ -10,8 +11,6 @@ SUMMONTEXT = """+/u/ascii-text-bot"""
 #  Import Settings from Config.py
 try:
     import Config
-    USERNAME = Config.USERNAME
-    PASSWORD = Config.PASSWORD
     USERAGENT = Config.USERAGENT
     MAXPOSTS = Config.MAXPOSTS
     REPLYMESSAGE = Config.REPLYMESSAGE
@@ -26,7 +25,9 @@ except ImportError:
 WAIT = 5
 
 r = praw.Reddit(USERAGENT)
-r.login(USERNAME, PASSWORD)
+#r.login(USERNAME, PASSWORD)
+o = OAuth2Util.OAuth2Util(r)
+
 
 img = ImgurClient(ID, SECRET)
 
@@ -35,6 +36,9 @@ cur = sql.cursor()
 cur.execute('CREATE TABLE IF NOT EXISTS posts(CID TEXT, CLink TEXT, CLinkParent TEXT, ILink TEXT)')
 print('Loaded SQL Database')
 sql.commit()
+
+
+
 
 def occurances(str, chars):
     count = 0
@@ -68,10 +72,10 @@ def scan():
             
             parent = r.get_info(thing_id=comment.parent_id)
             try:
-                pbody = html.unescape(parent.body)
+                pbody = parent.body
                 ClinkParent = parent.permalink
             except Exception as e:
-                pbody = html.unescape(parent.selftext)
+                pbody = parent.selftext
                 ClinkParent = parent.permalink
             
             f = open('CurrentAscii.html', 'w')
@@ -97,6 +101,7 @@ def scan():
     
 while True:
     try:
+        o.refresh()
         scan()
     except Exception as e:
         print("ERR", e)
