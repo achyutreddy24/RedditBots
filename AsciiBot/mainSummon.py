@@ -3,6 +3,7 @@ import time
 import sqlite3
 import html
 from imgurpython import ImgurClient
+import subprocess
 
 SUMMONTEXT = """+/u/ascii-text-bot"""
 
