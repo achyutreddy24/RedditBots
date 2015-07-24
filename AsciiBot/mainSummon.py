@@ -56,9 +56,9 @@ def scan():
         
         print(comment.created_utc)
         
-        #if comment.is_root:
-        #    print("Comment is root, ignoring")
-        #    continue
+        if comment.is_root:
+            print("Comment is root, ignoring")
+            continue
         if SUMMONTEXT not in cbody:
             print("summontext not found, ignoring")
             continue
