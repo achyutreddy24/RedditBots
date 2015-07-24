@@ -57,7 +57,7 @@ def scan():
         if comment.is_root:
             print("Comment is root, ignoring")
             continue
-        if SUMMONTEXT not in cbody:
+        if SUMMONTEXT not in cbody.lower():
             print("summontext not found, ignoring")
             continue
                 
