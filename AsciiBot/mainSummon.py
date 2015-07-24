@@ -48,7 +48,7 @@ def scan():
     comments = r.get_mentions(limit=MAXPOSTS)
     for comment in comments:
         
-        cbody = comment.body.lower()
+        cbody = comment.body
         Clink = comment.permalink
         cid = comment.id
         
@@ -73,12 +73,20 @@ def scan():
                 pbody = html.unescape(parent.selftext)
                 ClinkParent = parent.permalink
             
-            
-            ILink = upload_imgur('CurrentJPG.jpg')['link']
+            f = open('CurrentAscii.html', 'w')
+            f.write(pbody)
+            f.close()
+            print('Wrote text file')
+
+            subprocess.call('cutycapt --url=127.0.0.1/asciibot/CurrentAscii.html --out=CurrentPNG.png', shell=True)
+
+            ILink = upload_imgur('CurrentPNG.png')['link']
             print(ILink)
-        
+            
             print('Replying to ' + cid)
             comment.reply(REPLYMESSAGE.format(ILink))
+
+            subprocess.call('rm CurrentPNG.png CurrentAscii.html')
             
             cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [cid, Clink, ClinkParent, ILink])
             sql.commit()
