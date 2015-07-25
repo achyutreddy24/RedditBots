@@ -1,0 +1,740 @@
+a[href="/intensifies"] {
+    color: #000000;
+    text-transform: uppercase;
+    display: block;
+    font-size: 15px;
+    animation: intensify .1s steps(5) infinite;
+    -webkit-animation: intensify .1s steps(5) infinite;
+    -moz-animation: intensify .1s steps(5) infinite
+}
+@keyframes intensify {
+    0% {
+        margin-left: 0px
+    }
+    100% {
+        margin-left: 2px
+    }
+}
+@-webkit-keyframes intensify {
+    0% {
+        margin-left: 0px
+    }
+    100% {
+        margin-left: 2px
+    }
+}
+@-moz-keyframes intensify {
+    0% {
+        margin-left: 0px
+    }
+    100% {
+        margin-left: 2px
+    }
+}
+a[href="/intensifies"]:before {
+    content: "["
+}
+a[href="/intensifies"]:after {
+    content: "]"
+}
+.id-t3_2r6yx5 a,
+#siteTable_t3_2r6yx5 a {
+    content: ""
+}
+.id-t3_2r6yx5 a:before,
+#siteTable_t3_2r6yx5 a:before {
+    content: "nyxnyx"
+}
+.id-t3_2r6yx5 a:after,
+#siteTable_t3_2r6yx5 a:after {
+    content: "nyxnyx!"
+}
+#siteTable_t3_2r6yx5 .comment p {
+    content: ""
+}
+#siteTable_t3_2r6yx5 .comment p:before {
+    content: "nyxnyx"
+}
+#siteTable_t3_2r6yx5 .comment p:after {
+    content: "nyxnyx!"
+}
+.titlebox .usertext-body .md h3 a {
+    padding: 6px 6px 2px 6px;
+    margin: 5px;
+    border-bottom: 1px solid #5F99CF;
+    border-right: 1px solid #5F99CF;
+    -webkit-border-bottom-right-radius: 7px;
+    -moz-border-radius-bottomright: 7px;
+    border-bottom-right-radius: 14px;
+    z-index: 50
+}
+.pagename {
+    font-size: 12pt
+}
+body>.content {
+    margin-left: 4px;
+    margin-right: 20px
+}
+.titlebox .usertext-body .md h3 a:hover {
+    color: #444488
+}
+.titlebox form {
+    position: static
+}
+.titlebox .usertext-body .md h3 {
+    list-style: none;
+    position: absolute;
+    top: 80px;
+    left: 0px;
+    padding: 0px;
+    margin: 0px;
+    overflow: visible
+}
+.titlebox .usertext-body .md h3 a {
+    background-color: white;
+    text-align: left;
+    display: block;
+    text-decoration: none;
+    font-weight: normal
+}
+.give-gold {
+    color: #9A7D2E!important
+}
+div.titlebox span.word {
+    display: none
+}
+div.titlebox .subscribers span.number:after {
+    content: " photographers"
+}
+div.titlebox .users-online span.number:after {
+    content: " users online"
+}
+.footer .flat-list:active {
+    background-position: 0 -108px
+}
+.footer .flat-list li {
+    display: none;
+    visibility: hidden
+}
+.flair-tweetposter {
+    border: 0;
+    padding: 0;
+    background: transparent url("//c.thumbs.redditmedia.com/ZFhSm63uY1uz2_MD.png") center center no-repeat;
+    height: 16px;
+    width: 16px;
+    text-indent: -9999px
+}
+h4 {
+    font-size: small;
+    font-weight: normal;
+    color: #222222
+}
+pre {
+    font-size: small;
+    font-weight: normal;
+    color: green
+}
+.link.over18 a.comments:before {
+    text-decoration: overline underline
+}
+.id-t3_bxcwv a.comments:before {
+    content: " NSFW ";
+    text-decoration: overline underline;
+    color: red
+}
+.reported.comment>.child,
+.spam.comment>.child {
+    background-color: white;
+    margin-left: 0;
+    padding-left: 15px
+}
+.tabmenu li a {
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px
+}
+.author.submitter {
+    color: white;
+    padding: 0 2px 0 2px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px
+}
+.noncollapsed .author.submitter {
+    background-color: #5F99CF
+}
+.collapsed .author.submitter {
+    color: white;
+    background-color: #AAA
+}
+.author.submitter:hover {
+    background-color: #4E7EAB;
+    text-decoration: none
+}
+#link-desc:after {
+    display: block;
+    margin-top: 1em;
+    font-weight: bold;
+    color: red;
+    content: "This tab is for LINK-BASED submissions."
+}
+#text-desc:after {
+    display: block;
+    margin-top: 1em;
+    font-weight: bold;
+    color: red;
+    content: "This tab is for TEXT-BASED submissions, it will not link anywhere. You can't have your cake and eat it too. Sorry!"
+}
+body>.content>.sharelink ~ .sitetable:before {
+    content: "Help improve /r/pics by checking the new queue - report spam & upvote new submissions.";
+    background-image: url("//f.thumbs.redditmedia.com/r6maazfzRLIRTAle.png");
+    background-repeat: no-repeat;
+    font-family: verdana, sans-serif;
+    font-size: 12px;
+    color: #555555;
+    text-align: left;
+    padding: 10px 0px 10px 40px;
+    margin: 15px;
+    display: block;
+    width: 70%;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px
+}
+.titlebox a[href^="http://www.reddit.com/help/faq#Ispostingpersonalinformationok"] {
+    color: red
+}
+.linklisting .report-button:hover:before {
+    content: "This button is *only* to report spam and rule violations";
+    position: absolute;
+    display: block;
+    z-index: 1000;
+    padding: 5px;
+    border: 1px solid #919191;
+    border-radius: 5px;
+    background-color: #FCFCFC;
+    color: #6B6B6B;
+    text-align: center;
+    font-size: 11px;
+    font-weight: normal;
+    margin-left: -15px;
+    margin-top: -50px;
+    box-shadow: 2px 2px 5px #888888
+}
+.submit #title-field .title,
+.submit #url-field .title {
+    display: block
+}
+.submit #title-field .title:after {
+    content: "Try to think of a creative title";
+    display: block;
+    font-size: 10pt
+}
+.submit #url-field .title:after {
+    content: "Please try to credit the original author, you can use tineye.com or google images to search for the source. Do not use image hosts like tinypic or photobucket, they disable images with high bandwidth.";
+    display: block;
+    font-size: 10pt
+}
+.titlebox .usertext-body ol {
+    border-radius: 4px;
+    border-color: #FF4A4A;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #FFEDED;
+    padding-top: 0px;
+    padding-left: 35px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    margin: 0px;
+    list-style-type: upper-roman;
+    font-weight: bold;
+    font-size: 90%;
+    text-align: justify;
+    color: black
+}
+.titlebox .usertext-body ol ul {
+    list-style-type: lower-alpha;
+    padding-right: 0px;
+    margin-right: 0px
+}
+.titlebox .usertext-body li em {
+    font-style: normal
+}
+.titlebox .usertext-body ol li {
+    margin-top: 7px;
+    margin-bottom: 7px
+}
+.titlebox .usertext-body ol ul li {
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+.titlebox .usertext-body li {
+    text-align: justify
+}
+.flair {
+    padding: 0;
+    color: DimGray;
+    border: 0;
+    border-radius: 0;
+    text-indent: 0px;
+    position: relative;
+    top: 3px;
+    left: 2px
+}
+.flair-glass {
+    background: transparent;
+    background-image: url("//c.thumbs.redditmedia.com/4eYZkb07i2aZQkhn.png");
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+    width: 17px;
+    height: 16px
+}
+.flair-ring {
+    background: transparent;
+    background-image: url("//f.thumbs.redditmedia.com/9oedzKBMIq8AtOR5.png");
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+    width: 17px;
+    height: 16px
+}
+.flair-fox {
+    background: transparent;
+    background-image: url("//c.thumbs.redditmedia.com/Jj8foqTqzMqf0Sub.png");
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+    width: 17px;
+    height: 16px
+}
+.flair-sheep {
+    background: transparent;
+    background-image: url("//a.thumbs.redditmedia.com/paS9U4y05okyPLrl.png");
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+    width: 17px;
+    height: 16px
+}
+a[class~="title"]:before,
+a[class~="comments"]:before,
+a[class~="comments"]:after {
+    background-color: #FFE8ED;
+    content: "";
+    color: red;
+    border-color: red;
+    font-weight: bold;
+    border-style: dashed;
+    border-width: 1px;
+    margin-right: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 3px;
+    display: none
+}
+a[class~="title"]:before {
+    font-size: 70%
+}
+a[href*="upvote_if_"][class~="comments"]:before,
+a[href*="please_upvote"][class~="comments"]:before,
+a[href$="fixed/"][class~="comments"]:before,
+a[href*="does_anybody"][class~="comments"]:before,
+a[href*="does_anyone"][class~="comments"]:before,
+a[href*="anybody_else"][class~="comments"]:before,
+a[href*="anyone_else"][class~="comments"]:before,
+a[href*="/dae_"][class~="comments"]:before {
+    content: "Inappropriate post title. Read rule V";
+    display: block
+}
+a[href*="reddit_birthday"][class~="comments"]:before,
+a[href*="_cake_day"][class~="comments"]:before,
+a[href*="_cakeday"][class~="comments"]:before,
+a[href*="/cake_day"][class~="comments"]:before,
+a[href*="/cakeday"][class~="comments"]:before {
+    content: "Inappropriate post title. Read rule V";
+    display: block
+}
+a[href*="quickmeme.com"][class~="title"]:before,
+a[href*="memegenerator.net"][class~="title"]:before,
+a[href*="troll.me"][class~="title"]:before,
+a[href*="cheezburger.com"][class~="title"]:before,
+a[href*="explosm.net"][class~="title"]:before,
+a[href*="qkme.me"][class~="title"]:before {
+    content: "No comics/macros. Read rule I";
+    display: block
+}
+a[href*="fbcdn-sphotos"][class~="title"]:before,
+a[href*="fbcdn.net"][class~="title"]:before {
+    content: "Server not allowed. Read rule III";
+    display: block
+}
+a[href*="shit_like_this"].comments:after,
+a[href*="nailed_it"].comments:after,
+a[href*="/not_sure_if"].comments:after,
+a[href*="/i_see_your"].comments:after,
+a[href*="/ill_see_your"].comments:after,
+a[href*="doing_it_right"].comments:after,
+a[href*="doing_it_wrong"].comments:after,
+a[href*="am_i_doing_this_right"].comments:after,
+a[href*="how_i_feel"].comments:after,
+a[href*="/dear"].comments:after,
+a[href*="nothing_to_see_here"].comments:after,
+a[href*="/meanwhile_in"].comments:after,
+a[href*="found_this_gem"].comments:after,
+a[href*="/fuck_everything_about"].comments:after,
+a[href*="/i_see_what_you_did_there"].comments:after,
+a[href*="like_a_boss"].comments:after,
+a[href*="/soon/"].comments:after,
+a[href*="come_at_me_bro"].comments:after,
+a[href*="all_the_things"].comments:after,
+a[href*="/damn_nature"].comments:after,
+a[href*="that_is_all/"].comments:after,
+a[href*="/if_you_do_this"].comments:after {
+    content: "Clichéd/unoriginal post title";
+    display: block;
+    color: white;
+    border-color: white;
+    background-color: #CCCCCC;
+    margin-left: 2px;
+    margin-right: 0px
+}
+a[href*="comments/2qnwea"].comments:before,
+a[href*="comments/qjnph"].comments:before,
+a[href*="comments/2llx9w"].comments:before,
+a[href*="anyone_know"][class~="comments"]:before,
+a[href*="zc18t"][class~="comments"]:before,
+a[href*="comments/w8hes"].comments:after,
+.linkflair-ignore a[class~="comments"]:before,
+.linkflair-ignore a[class~="title"]:after,
+a[href*="anybody_know"][class~="comments"]:before {
+    display: none
+}
+.titlebox tr strong,
+.titlebox th {
+    color: white;
+    background-color: #51AEFF;
+    margin-top: -2px;
+    margin-right: -3px;
+    margin-left: -3px;
+    margin-bottom: -2px;
+    text-align: left;
+    border-color: #51AEFF;
+    border-style: solid;
+    border-width: 2px;
+    font-size: 10px
+}
+.titlebox tr strong {
+    display: block
+}
+.titlebox th {
+    border-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 2px
+}
+.titlebox td {
+    border-style: none;
+    padding: 3px;
+    font-size: 80%;
+    width: 50%
+}
+.titlebox table {
+    border-radius: 11px;
+    border-color: #51AEFF;
+    border-style: solid;
+    border-width: 1px;
+    margin: auto;
+    width: 100%;
+    margin-bottom: 10px
+}
+.titlebox td:hover {
+    background-color: white
+}
+.thing.spam .title a:after,
+.thing.spam .domain a:after,
+.thing.spam .domain a {
+    color: white;
+    background-color: orange;
+    padding-left: 4px;
+    padding-right: 4px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px
+}
+.thing.spam .title a:after {
+    font-size: 60%;
+    margin-left: 3px
+}
+.thing.spam .domain a:after {
+    font-weight: bold;
+    content: "- ?";
+    font-size: 100%
+}
+.thing.spam .title a[href$=".png"]:after {
+    background-color: green;
+    content: "PNG"
+}
+.thing.spam .title a[href$=".jpg"]:after,
+.thing.spam .title a[href$=".jpe"]:after,
+.thing.spam .title a[href$=".jpeg"]:after {
+    background-color: green;
+    content: "JPEG"
+}
+.thing.spam .title a[href$=".gif"]:after {
+    background-color: green;
+    content: "GIF"
+}
+.thing.spam .title a[href$=".bmp"]:after {
+    background-color: green;
+    content: "BMP"
+}
+.thing.spam .domain a[href*="wikipedia"],
+.thing.spam .domain a[href*="flickr"],
+.thing.spam .domain a[href*="tumblr.com"],
+.thing.spam .domain a[href*="dropbox.com"],
+.thing.spam .domain a[href*="media.tumblr.com"],
+.thing.spam .domain a[href*="s3.amazonaws.com"],
+.thing.spam .domain a[href*="files.wordpress.com"],
+.thing.spam .domain a[href*="imageshack"],
+.thing.spam .domain a[href*="imgur"],
+.thing.spam .domain a[href*="img.ur"] {
+    background-color: green
+}
+.thing.spam .domain a[href*="wikipedia"]:after,
+.thing.spam .domain a[href*="flickr"]:after,
+.thing.spam .domain a[href*="tumblr.com"]:after,
+.thing.spam .domain a[href*="dropbox.com"]:after,
+.thing.spam .domain a[href*="media.tumblr.com"]:after,
+.thing.spam .domain a[href*="s3.amazonaws.com"]:after,
+.thing.spam .domain a[href*="files.wordpress.com"]:after,
+.thing.spam .domain a[href*="imageshack"]:after,
+.thing.spam .domain a[href*="imgur"]:after,
+.thing.spam .domain a[href*="img.ur"]:after {
+    background-color: green;
+    content: "- ok"
+}
+.thing.spam .domain a[href*="quickmeme.com"],
+.thing.spam .domain a[href*="qkme.me"],
+.thing.spam .domain a[href*="memegenerator.net"],
+.thing.spam .domain a[href*="troll.me"],
+.thing.spam .domain a[href*="cheezburger.com"],
+.thing.spam .domain a[href*="fbcdn"],
+.thing.spam .domain a[href*="facebook.com"],
+.thing.spam .domain a[href*="explosm.net"],
+.thing.spam .domain a[href*="youtube"],
+.thing.spam .domain a[href*="youtu.be"],
+.thing.spam .domain a[href*="buzzfeed.com"],
+.thing.spam .domain a[href*="edencaf.forumfree.it"] {
+    background-color: red
+}
+.thing.spam .domain a[href*="quickmeme.com"]:after,
+.thing.spam .domain a[href*="qkme.me"]:after,
+.thing.spam .domain a[href*="memegenerator.net"]:after,
+.thing.spam .domain a[href*="troll.me"]:after,
+.thing.spam .domain a[href*="cheezburger.com"]:after,
+.thing.spam .domain a[href*="fbcdn"]:after,
+.thing.spam .domain a[href*="facebook.com"]:after,
+.thing.spam .domain a[href*="explosm.net"]:after,
+.thing.spam .domain a[href*="youtube"]:after,
+.thing.spam .domain a[href*="youtu.be"]:after,
+.thing.spam .domain a[href*="buzzfeed.com"]:after,
+.thing.spam .domain a[href*="edencaf.forumfree.it"]:after {
+    background-color: red;
+    content: "- X"
+}
+.side {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    border-left: 1px solid #7e7e7e;
+    border-bottom: 1px solid #7e7e7e;
+    width: 300px;
+    border-bottom-left-radius: 3px
+}
+.linkflair-bad .linkflairlabel {
+    background-color: #FFE8ED;
+    color: red;
+    border-color: red;
+    font-weight: bold;
+    border-style: dashed;
+    border-width: 1px;
+    border-radius: 3px
+}
+.linkflairlabel {
+    color: red!important;
+    font-weight: 900;
+    background: white!important;
+    border: 1px solid red
+}
+.res-nightmode .side ol {
+    color: #000!important
+}
+html {
+    position: relative
+}
+body.search-page a[class~="comments"]:before,
+body.search-page a[class~="title"]:before {
+    display: none
+}
+.helplink:hover:before {
+    position: absolute;
+    display: block;
+    z-index: 1000;
+    width: 125px;
+    padding: 5px;
+    border: 1px solid #919191;
+    border-radius: 5px;
+    background-color: #FCFCFC;
+    color: #6B6B6B;
+    content: "Please include all relevant links if needed!";
+    text-align: center;
+    font-size: 11px;
+    font-weight: normal;
+    margin-left: -15px;
+    margin-top: -50px;
+    box-shadow: 2px 2px 5px #888888
+}
+a[href$="/spoiler"] {
+    background: none repeat scroll 0 0 #000000!important;
+    color: #000000!important
+}
+a[href$="/spoiler"]:hover {
+    color: #ffffff!important
+}
+.author[href$="/GuitarFreak027"] {
+    color: #3395DF
+}
+.author[href$="/GuitarFreak027"]:after {
+    content: url("//d.thumbs.redditmedia.com/4A0vJaZ4jAdG-dz9.png")
+}
+.sidebox.submit:hover:before {
+    position: fixed;
+    display: block;
+    top: 0;
+    text-align: center;
+    background-color: #a00;
+    color: #fff;
+    z-index: 1000;
+    padding: 5px 0;
+    width: 100%;
+    left: 0;
+    font-size: 16px;
+    font-weight: normal;
+    content: "Please read the rules, and note that screenshots and superimposed text aren't allowed"
+}
+html:lang(re) .moderator.listing-page .linklisting .thing.link {
+    padding-left: 92px
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) {
+    position: absolute!important;
+    left: 0px;
+    width: 20px;
+    height: 100px
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button {
+    position: relative!important;
+    top: -18px;
+    width: 100%;
+    height: 100%;
+    min-width: 100%
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button span.option.error.active {
+    font-size: 0
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button span.option.error.active .no {
+    display: none
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button span.option.error.active a.yes {
+    font-size: 10pt;
+    background-color: #FFDBDB;
+    border-color: red!important;
+    padding-left: 33px;
+    padding-right: 33px
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button {
+    font-weight: bold;
+    color: #D6D6D6;
+    text-align: center
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button a {
+    padding: 100%;
+    background-color: #F0F0F0;
+    color: gray!important;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 120%;
+    font-weight: bold;
+    border: 1px solid gray!important;
+    text-decoration: none
+}
+html:lang(re) .moderator.listing-page ul.flat-list.buttons li:nth-child(6) form.toggle.remove-button a:hover {
+    background-color: #FFDBDB;
+    border-color: red!important
+}
+.md a[title~="orange"] {
+    color: #DB963E!important
+}
+body.post-under-10m-old.comments-page.post-submitter .link p.tagline {
+    font-size: 0
+}
+body.post-under-10m-old.comments-page.post-submitter .link p.tagline span.flair {
+    display: none
+}
+body.post-under-10m-old.comments-page.post-submitter .link span.RESUserTag {
+    display: none
+}
+body.post-under-10m-old.comments-page.post-submitter .link form.toggle.del-button a.togglebutton {
+    color: #F18B97
+}
+body.post-under-10m-old.comments-page.post-submitter .link p.tagline:after {
+    font-size: 8pt;
+    content: "PLEASE post elsewhere if your pic is a screenshot or has text, otherwise ignore this";
+    color: white;
+    border-color: #FF5656;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 1px 3px 1px 15px;
+    background-image: url("//b.thumbs.redditmedia.com/FA38Y3wQRAflNckg.png");
+    background-repeat: no-repeat;
+    background-position: 2px 50%;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: pre-line;
+    border-width: 1px 1px 1px 1px;
+    background-color: #FF4F4F;
+    line-height: 20px
+}
+div#siteTable .link {
+    margin-bottom: 0px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+html:lang(re) .thing .title {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 30em
+}
+html:lang(nt) #siteTable.sitetable.linklisting:not(.organic-listing) .thing a.title {
+    font-size: 0!important
+}
+html:lang(nt) #siteTable.sitetable.linklisting:not(.organic-listing) .thing a.title:after {
+    font-size: initial!important;
+    content: "[Title Hidden]"
+}
+html:lang(nt) a.thumbnail img {
+    width: 140px;
+    height: auto
+}
+html:lang(nt) a.thumbnail {
+    width: 140px
+}
+.linkflair-ignore p.title span.linkflairlabel {
+    font-size: 0;
+    display: none
+}
+.commentarea .usertext textarea {
+    background-image: url("//a.thumbs.redditmedia.com/hUUmT4Y5TJwQL7xj.png");
+    background-repeat: no-repeat
+}
+.commentarea .usertext textarea:focus {
+    background-position: 0 -104px;
+    right: -50px
+}
