@@ -86,7 +86,7 @@ def scan():
             print('Replying to ' + cid)
             comment.reply(REPLYMESSAGE.format(ILink))
 
-            subprocess.call('rm CurrentPNG.png CurrentAscii.html', shell=True)
+            subprocess.call('rm CurrentPNG.png', shell=True)
             
             cur.execute('INSERT INTO posts VALUES(?, ?, ?, ?)', [cid, Clink, ClinkParent, ILink])
             sql.commit()
