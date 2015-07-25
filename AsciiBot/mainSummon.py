@@ -78,8 +78,13 @@ def scan():
                 pbody = parent.selftext
                 ClinkParent = parent.permalink
             
+            temp = open('comment.html', 'r')
+            t = temp.read()
+            t = t.format(karma=parent.score, username=parent.author, body=pbody)
+            temp.close
+
             f = open('CurrentAscii.html', 'w')
-            f.write(pbody)
+            f.write(t)
             f.close()
             print('Wrote text file')
 
