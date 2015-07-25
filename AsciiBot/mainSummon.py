@@ -78,17 +78,17 @@ def scan():
                 pbody = parent.selftext
                 ClinkParent = parent.permalink
             
-            temp = open('comment.html', 'r')
-            t = temp.read()
-            t = t.format(karma=parent.score, username=parent.author, body=pbody)
-            temp.close
+#            temp = open('comment.html', 'r')
+#            t = temp.read()
+#            t = t.format(karma=parent.score, username=parent.author, body=pbody)
+#            temp.close
+#
+#            f = open('CurrentAscii.html', 'w')
+#            f.write(t)
+#            f.close()
+#            print('Wrote text file')
 
-            f = open('CurrentAscii.html', 'w')
-            f.write(t)
-            f.close()
-            print('Wrote text file')
-
-            subprocess.call('xvfb-run --server-args="-screen 0, 1280x1200x24" cutycapt --url=127.0.0.1/asciibot/CurrentAscii.html --out=CurrentPNG.png', shell=True)
+            subprocess.call('xvfb-run --server-args="-screen 0, 1280x1200x24" cutycapt --url={url} --out=CurrentPNG.png'.format(url=ClinkParent), shell=True)
 
             ILink = upload_imgur('CurrentPNG.png')['link']
             print(ILink)
