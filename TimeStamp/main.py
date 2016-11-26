@@ -13,6 +13,8 @@ TIMESTAMP_DETECT = re.compile("""(?:(\d{0,2}):)?(\d{1,2}):(\d{1,2})""")
 
 CON_URL = """https://youtu.be/{vid_id}?t={t}"""
 
+BLOCKED = ['youtubefactsbot']
+
 #  Import Settings from Config.py
 try:
     import Config
@@ -44,20 +46,24 @@ def calc_seconds(hour, minute, second):
 
 def scan():
     subreddit = r.get_subreddit("all")
-    #posts = subreddit.get_comments(limit=MAXPOSTS)
-    #for comment in posts:
     stream = praw.helpers.comment_stream(r, subreddit, limit=100)
     for comment in stream:
         
         cbody = comment.body
-        Clink = comment.permalink
-        cid = comment.id
+        
         
         # Faster than regex to eliminate most comments
         if 'youtu' not in cbody:
             continue
         
         print(cbody)
+        
+        Clink = comment.permalink
+        cid = comment.id
+        author = comment.author
+        
+        if author.name in BLOCKED:
+            continue
         
         match_yt = URL_DETECT.search(cbody)
         if match_yt is None:
